@@ -1,15 +1,16 @@
-# PetTrip_flutter
-<br>
+# pettrip_fe
 
-## ✏ Commit 규칙
-|제목|설명|
-|---|---|
-|Feat:|새로운 기능 추가|
-|Fix:|버그 수정|
-|Build:|빌드 관련 파일 변경 (모듈 설치, 삭제 등)|
-|Chore:|패키지 매니저, 그 외 기타 수정 (.gitignore 등)|
-|Style:|코드 형식 변경 및 세미콜론 추가|
-|Comment:|주석 생성, 수정 및 삭제|
-|Docs:|문서 수정|
-|Refactor:|가독성 개선 등 코드 리팩터링|
-|Rename:|파일 및 폴더명 변경|
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
