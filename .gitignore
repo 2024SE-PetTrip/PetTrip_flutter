@@ -44,4 +44,4 @@ app.*.map.json
 
 
 # key
-lib/const/api_key.dart
+lib/const/secret_key.dart

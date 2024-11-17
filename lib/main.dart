@@ -1,14 +1,15 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pettrip_fe/const/api_key.dart';
+import 'package:pettrip_fe/const/secret_key.dart';
+import 'package:pettrip_fe/const/colors.dart';
+import 'package:pettrip_fe/screens/course_maker_page.dart';
 
 void main() async {
   await _initialize();
-  runApp(const NaverMapApp());
+  runApp(MaterialApp(home: const MainPage()));
 }
 
 Future<void> _initialize() async {
@@ -19,50 +20,63 @@ Future<void> _initialize() async {
       onAuthFailed: (error) {
         print('네이버맵 인증 오류: $error');
       });
+
+  // 위치 권한 얻기
+  var requestStatus = await Permission.location.request();
+  var status = await Permission.location.status;
+  if (requestStatus.isPermanentlyDenied || status.isPermanentlyDenied) {
+    openAppSettings();
+  }
 }
 
-// 네이버맵 테스트 코드
-class NaverMapApp extends StatefulWidget {
-  const NaverMapApp({Key? key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<NaverMapApp> createState() => _NaverMapAppState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _NaverMapAppState extends State<NaverMapApp> {
-  void _permission() async {
-    var requestStatus = await Permission.location.request();
-    var status = await Permission.location.status;
-    if (requestStatus.isPermanentlyDenied || status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-  }
+class _MainPageState extends State<MainPage> {
+  int _selectedIndex = 0;
+  late final List<Widget> _widgetOptions;
 
   @override
   void initState() {
-    _permission();
     super.initState();
+    _widgetOptions = <Widget>[
+      CourseMakerPage(),
+      Placeholder(),
+      Placeholder(),
+      Placeholder(),
+      Placeholder(),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
-    final Completer<NaverMapController> mapControllerCompleter = Completer();
-
-    return MaterialApp(
-      home: Scaffold(
-        body: NaverMap(
-          options: const NaverMapViewOptions(
-            indoorEnable: true,             // 실내 맵 사용 가능 여부 설정
-            locationButtonEnable: true,    // 위치 버튼 표시 여부 설정
-            consumeSymbolTapEvents: false,  // 심볼 탭 이벤트 소비 여부 설정
-          ),
-          onMapReady: (controller) async {                // 지도 준비 완료 시 호출되는 콜백 함수
-            controller.setLocationTrackingMode(NLocationTrackingMode.face); // 사용자 추적
-            mapControllerCompleter.complete(controller);  // Completer에 지도 컨트롤러 완료 신호 전송
-            log("onMapReady", name: "onMapReady");
-          },
-        ),
+    return Scaffold(
+      body: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
+      // 하단바
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.pets), label: '코스생성'),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: '코스찾기'),
+            BottomNavigationBarItem(icon: Icon(Icons.group), label: '산책모임'),
+            BottomNavigationBarItem(icon: Icon(Icons.volunteer_activism), label: '돌봄요청'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '내정보')
+          ],
+        backgroundColor: Colors.white,
+        selectedItemColor: MAIN_COLOR,
+        unselectedItemColor: DARK_GRAY_COLOR,
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        onTap:(int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
   }
