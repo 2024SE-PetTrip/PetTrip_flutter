@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
+import '../const/secret_key.dart';
+import 'package:http/http.dart' as http;
+
 class LocationService {
   final List<NLatLng> pathCoordinates = []; // 경로 좌표 저장 리스트
   late Timer _locationTimer;
@@ -55,4 +58,48 @@ class LocationService {
     _locationTimer.cancel();
     _pathStreamController.close();
   }
+
+  /// 경로를 포함하는 지도 이미지 URL 생성 메서드
+  Future<String> getStaticMapUrl() async {
+    if (pathCoordinates.isEmpty) {
+      throw Exception('Path coordinates are empty');
+    }
+
+    // 경로를 문자열로 변환
+    String pathString = pathCoordinates
+        .map((coord) => '${coord.longitude},${coord.latitude}')
+        .join('|');
+
+    // Static Map API Base URL
+    final String baseUrl = 'https://naveropenapi.apigw.ntruss.com/map-static/v2/raster';
+
+    // 쿼리 매개변수 직접 조립 (인코딩 문제 방지)
+    final String queryString = Uri(queryParameters: {
+      'center': '${pathCoordinates.last.longitude},${pathCoordinates.last.latitude}',
+      'level': '14',
+      'w': '800',
+      'h': '600',
+      'path': 'weight:5|color:0xFF0000|$pathString', // 여기에서 직접 작성
+    }).query;
+
+    final String requestUrl = '$baseUrl?$queryString';
+
+    // 헤더 설정
+    final headers = {
+      'x-ncp-apigw-api-key-id': naverMapID,
+      'x-ncp-apigw-api-key': naverMapSecret,
+    };
+
+    debugPrint('**requestUrl: $requestUrl');
+
+    // HTTP 요청
+    final response = await http.get(Uri.parse(requestUrl), headers: headers);
+
+    if (response.statusCode == 200) {
+      return requestUrl;
+    } else {
+      throw Exception('Failed to generate map URL: ${response.statusCode}, ${response.body}');
+    }
+  }
 }
+

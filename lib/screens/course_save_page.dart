@@ -8,8 +8,9 @@ import '../services/location_service.dart';
 class CourseSavePage extends StatelessWidget {
   final String trackedTime;
   final List<NLatLng> pathCoordinates;
+  final String mapImageUrl;
 
-  CourseSavePage({required this.trackedTime, required this.pathCoordinates});
+  CourseSavePage({required this.trackedTime, required this.pathCoordinates, required this.mapImageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class CourseSavePage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates),
+              SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates, mapImageUrl: mapImageUrl,),
             ],
           )
         ),

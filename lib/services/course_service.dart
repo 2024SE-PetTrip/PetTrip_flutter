@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import '../const/secret_key.dart';
 
 class CourseService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: backendURL));
+  final Dio _dio = Dio(BaseOptions(baseUrl: backendUrl));
 
   Future<void> saveCourse(Map<String, dynamic> courseData) async {
     try {

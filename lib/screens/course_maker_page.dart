@@ -88,12 +88,14 @@ class _CourseMakerPageState extends State<CourseMakerPage> {
           SizedBox(height: 30,),
           _isTracking?
           TextButton(
-              onPressed: () {
+              onPressed: () async {
                 _stopTracking();
+                String _mapImageUrl = await _locationService.getStaticMapUrl();
+                debugPrint('@@@@@맵url:' + _mapImageUrl);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CourseSavePage(trackedTime: _trackedTime, pathCoordinates: _locationService.pathCoordinates),
+                    builder: (context) => CourseSavePage(trackedTime: _trackedTime, pathCoordinates: _locationService.pathCoordinates, mapImageUrl: _mapImageUrl),
                   ),
                 );},
               child: Text('코스 기록 종료'), style: TEXT_BUTTON_STYLE) :

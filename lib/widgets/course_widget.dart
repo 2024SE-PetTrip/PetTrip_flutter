@@ -17,6 +17,7 @@ class SaveCourseForm extends StatefulWidget {
   final String? initialCity;
   final List<String>? initialTag;
   final List<NLatLng>? pathCoordinates;
+  final String? mapImageUrl;
 
   // 생성자
   SaveCourseForm({
@@ -27,7 +28,8 @@ class SaveCourseForm extends StatefulWidget {
     this.initialProvince,
     this.initialCity,
     this.initialTag,
-    this.pathCoordinates
+    this.pathCoordinates,
+    this.mapImageUrl
   });
 
   @override
@@ -97,6 +99,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
         key: _formKey,
         child: Column(
           children: [
+            Image.network(widget.mapImageUrl!),
             // 코스 이름
             TextFormField(
               controller: _courseNameController,

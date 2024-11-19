@@ -41,6 +41,7 @@ dependencies:
   geolocator_android: 4.5.5
   choice: ^2.3.2
   dio: ^5.7.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
