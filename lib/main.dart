@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/secret_key.dart';
 import 'package:pettrip_fe/const/colors.dart';
+import 'package:pettrip_fe/screens/course_detail_page.dart';
 import 'package:pettrip_fe/screens/course_maker_page.dart';
 
 void main() async {
@@ -45,7 +47,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _widgetOptions = <Widget>[
       CourseMakerPage(),
-      Placeholder(),
+      CourseDetailPage(course: dummyCourseData),
       Placeholder(),
       Placeholder(),
       Placeholder(),

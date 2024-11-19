@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-ButtonStyle TEXT_BUTTON_STYLE = TextButton.styleFrom(
+ButtonStyle defaultTextButtonStyle = TextButton.styleFrom(
   padding: EdgeInsets.symmetric(horizontal: 80),
   foregroundColor: Colors.white,
   backgroundColor: MAIN_COLOR,
@@ -12,9 +13,23 @@ ButtonStyle TEXT_BUTTON_STYLE = TextButton.styleFrom(
   ),
 );
 
-OutlineInputBorder INPUT_BORDER = OutlineInputBorder(
+OutlineInputBorder defaultInputBorder = OutlineInputBorder(
   borderSide: BorderSide(
     color: LIGHT_GRAY_COLOR,
   ),
   borderRadius: BorderRadius.all(Radius.circular(15)),
+);
+
+NaverMapViewOptions defaultNaverMapOptions = NaverMapViewOptions(
+  logoAlign: NLogoAlign.rightTop,
+  logoMargin: EdgeInsets.all(10),
+  logoClickEnable: false,
+  rotationGesturesEnable: false,
+  tiltGesturesEnable: false,
+  stopGesturesEnable: false,
+  extent: NLatLngBounds(
+    southWest: NLatLng(33.0, 122.37),
+    northEast: NLatLng(38.9, 132.0),
+  ),
+  minZoom: 9,
 );

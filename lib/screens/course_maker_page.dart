@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pettrip_fe/screens/course_save_page.dart';
+import 'package:pettrip_fe/screens/save_course_page.dart';
 
 import '../const/style.dart';
 import '../services/location_service.dart';
-import '../widgets/map_widget.dart';
+import '../widgets/course_maker_map.dart';
 
 class CourseMakerPage extends StatefulWidget {
   const CourseMakerPage({super.key});
@@ -77,7 +77,7 @@ class _CourseMakerPageState extends State<CourseMakerPage> {
       // ),
       body: Column(
         children: [
-          mapWidget(locationService: _locationService),
+          CourseMakerMap(locationService: _locationService),
           Text(
             _stopwatchFormat(),
             style: TextStyle(
@@ -90,18 +90,16 @@ class _CourseMakerPageState extends State<CourseMakerPage> {
           TextButton(
               onPressed: () async {
                 _stopTracking();
-                String _mapImageUrl = await _locationService.getStaticMapUrl();
-                debugPrint('@@@@@맵url:' + _mapImageUrl);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CourseSavePage(trackedTime: _trackedTime, pathCoordinates: _locationService.pathCoordinates, mapImageUrl: _mapImageUrl),
+                    builder: (context) => SaveCoursePage(trackedTime: _trackedTime, pathCoordinates: _locationService.pathCoordinates),
                   ),
                 );},
-              child: Text('코스 기록 종료'), style: TEXT_BUTTON_STYLE) :
+              child: Text('코스 기록 종료'), style: defaultTextButtonStyle) :
           TextButton(
               onPressed: () {_startTracking();},
-              child: Text('코스 기록 시작'), style: TEXT_BUTTON_STYLE),
+              child: Text('코스 기록 시작'), style: defaultTextButtonStyle),
         ],
       ),
     );

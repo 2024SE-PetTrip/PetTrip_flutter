@@ -17,7 +17,6 @@ class SaveCourseForm extends StatefulWidget {
   final String? initialCity;
   final List<String>? initialTag;
   final List<NLatLng>? pathCoordinates;
-  final String? mapImageUrl;
 
   // 생성자
   SaveCourseForm({
@@ -29,7 +28,6 @@ class SaveCourseForm extends StatefulWidget {
     this.initialCity,
     this.initialTag,
     this.pathCoordinates,
-    this.mapImageUrl
   });
 
   @override
@@ -99,7 +97,6 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
         key: _formKey,
         child: Column(
           children: [
-            Image.network(widget.mapImageUrl!),
             // 코스 이름
             TextFormField(
               controller: _courseNameController,
@@ -107,8 +104,8 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                   hintText: "코스명",
                   filled: true,
                   fillColor: LIGHT_GRAY_COLOR,
-                  enabledBorder: INPUT_BORDER,
-                  focusedBorder: INPUT_BORDER),
+                  enabledBorder: defaultInputBorder,
+                  focusedBorder: defaultInputBorder),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '코스 이름을 입력해 주세요';
@@ -178,8 +175,8 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                   labelText: '도/광역시',
-                  enabledBorder: INPUT_BORDER,
-                  focusedBorder: INPUT_BORDER),
+                  enabledBorder: defaultInputBorder,
+                  focusedBorder: defaultInputBorder),
               value: _selectedProvince,
               onChanged: (String? newValue) {
                 setState(() {
@@ -208,8 +205,8 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                   labelText: '시/군/구',
-                  enabledBorder: INPUT_BORDER,
-                  focusedBorder: INPUT_BORDER),
+                  enabledBorder: defaultInputBorder,
+                  focusedBorder: defaultInputBorder),
               value: _selectedCity,
               onChanged: (String? newValue) {
                 setState(() {
@@ -303,7 +300,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
             SizedBox(height: 20,),
             TextButton(
                 onPressed: () {_submitForm();},
-                child: Text('코스 등록'), style: TEXT_BUTTON_STYLE),
+                child: Text('코스 등록'), style: defaultTextButtonStyle),
           ],
         ));
   }

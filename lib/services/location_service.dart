@@ -40,7 +40,7 @@ class LocationService {
   // TODO: 좌표 저장 간격 조절
   // 10초마다 현재 위치를 받아서 경로를 추가하는 함수
   void startLocationTracking() {
-    _locationTimer = Timer.periodic(Duration(seconds: 10), (timer) async {
+    _locationTimer = Timer.periodic(Duration(seconds: 3), (timer) async {
       Position? position = await _getCurrentLocation();
       if (position != null) {
         // 새로운 좌표를 저장
@@ -57,49 +57,6 @@ class LocationService {
   void stopLocationTracking() {
     _locationTimer.cancel();
     _pathStreamController.close();
-  }
-
-  /// 경로를 포함하는 지도 이미지 URL 생성 메서드
-  Future<String> getStaticMapUrl() async {
-    if (pathCoordinates.isEmpty) {
-      throw Exception('Path coordinates are empty');
-    }
-
-    // 경로를 문자열로 변환
-    String pathString = pathCoordinates
-        .map((coord) => '${coord.longitude},${coord.latitude}')
-        .join('|');
-
-    // Static Map API Base URL
-    final String baseUrl = 'https://naveropenapi.apigw.ntruss.com/map-static/v2/raster';
-
-    // 쿼리 매개변수 직접 조립 (인코딩 문제 방지)
-    final String queryString = Uri(queryParameters: {
-      'center': '${pathCoordinates.last.longitude},${pathCoordinates.last.latitude}',
-      'level': '14',
-      'w': '800',
-      'h': '600',
-      'path': 'weight:5|color:0xFF0000|$pathString', // 여기에서 직접 작성
-    }).query;
-
-    final String requestUrl = '$baseUrl?$queryString';
-
-    // 헤더 설정
-    final headers = {
-      'x-ncp-apigw-api-key-id': naverMapID,
-      'x-ncp-apigw-api-key': naverMapSecret,
-    };
-
-    debugPrint('**requestUrl: $requestUrl');
-
-    // HTTP 요청
-    final response = await http.get(Uri.parse(requestUrl), headers: headers);
-
-    if (response.statusCode == 200) {
-      return requestUrl;
-    } else {
-      throw Exception('Failed to generate map URL: ${response.statusCode}, ${response.body}');
-    }
   }
 }
 

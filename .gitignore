@@ -45,3 +45,4 @@ app.*.map.json
 
 # key
 lib/const/secret_key.dart
+lib/const/dummy_data.dart

@@ -6,18 +6,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/const/colors.dart';
+import 'package:pettrip_fe/const/style.dart';
 
 import '../services/location_service.dart';
 
-class mapWidget extends StatefulWidget {
+class CourseMakerMap extends StatefulWidget {
   final LocationService locationService;
-  const mapWidget({Key? key, required this.locationService});
+  const CourseMakerMap({Key? key, required this.locationService});
 
   @override
-  State<mapWidget> createState() => _mapWidgetState();
+  State<CourseMakerMap> createState() => _CourseMakerMapState();
 }
 
-class _mapWidgetState extends State<mapWidget> {
+class _CourseMakerMapState extends State<CourseMakerMap> {
   late NaverMapController _mapController;
   late StreamSubscription<List<NLatLng>> _pathSubscription;
 
@@ -41,7 +42,7 @@ class _mapWidgetState extends State<mapWidget> {
     final pathOverlay = NPathOverlay(
       id: 'path',
       coords: pathCoordinates,
-      width: 6,
+      width: 5,
       color: POINT_COLOR,
     );
 
@@ -56,7 +57,6 @@ class _mapWidgetState extends State<mapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
     final Completer<NaverMapController> mapControllerCompleter = Completer();
 
     return ShaderMask(
@@ -72,20 +72,7 @@ class _mapWidgetState extends State<mapWidget> {
       child: Container(
         height: 430,
         child: NaverMap(
-          options: const NaverMapViewOptions(
-            logoAlign: NLogoAlign.rightTop,
-            logoMargin: EdgeInsets.all(10),
-            logoClickEnable: false,
-            rotationGesturesEnable: false,
-            scrollGesturesEnable: false,
-            tiltGesturesEnable: false,
-            stopGesturesEnable: false,
-            extent: NLatLngBounds(
-              southWest: NLatLng(31.43, 122.37),
-              northEast: NLatLng(44.35, 132.0),
-            ),
-            minZoom: 9,
-          ),
+          options: defaultNaverMapOptions,
           onMapReady: (controller) async {
             controller.setLocationTrackingMode(NLocationTrackingMode.follow);
             _mapController = controller;

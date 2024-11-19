@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:pettrip_fe/widgets/course_widget.dart';
+import 'package:pettrip_fe/widgets/save_course_form.dart';
 
 import '../services/location_service.dart';
 
-class CourseSavePage extends StatelessWidget {
+class SaveCoursePage extends StatelessWidget {
   final String trackedTime;
   final List<NLatLng> pathCoordinates;
-  final String mapImageUrl;
 
-  CourseSavePage({required this.trackedTime, required this.pathCoordinates, required this.mapImageUrl});
+  SaveCoursePage({required this.trackedTime, required this.pathCoordinates});
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +27,9 @@ class CourseSavePage extends StatelessWidget {
       ),
     ),
       body: SingleChildScrollView(
-        child: Container(
+        child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates, mapImageUrl: mapImageUrl,),
-            ],
-          )
+          child: SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates),
         ),
       ),
     );
