@@ -45,7 +45,7 @@ class _CourseDetailMapState extends State<CourseDetailMap> {
               id: 'path',
               coords: widget.pathCoordinates,
               width: 5,
-              color: MAIN_COLOR,
+              color: POINT_COLOR,
             ));
           }
           mapControllerCompleter.complete(controller);

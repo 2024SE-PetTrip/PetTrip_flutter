@@ -15,6 +15,7 @@ class SaveCourseForm extends StatefulWidget {
   final bool? initialIsShared;
   final String? initialProvince;
   final String? initialCity;
+  final String? initialDescription;
   final List<String>? initialTag;
   final List<NLatLng>? pathCoordinates;
 
@@ -26,6 +27,7 @@ class SaveCourseForm extends StatefulWidget {
     this.initialIsShared,
     this.initialProvince,
     this.initialCity,
+    this.initialDescription,
     this.initialTag,
     this.pathCoordinates,
   });
@@ -39,11 +41,14 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _courseNameController = TextEditingController();
+  final TextEditingController _courseDescriptionController = TextEditingController();
   String? _selectedProvince;
   String? _selectedCity;
-  List<String> _cities = []; // 도,광역시마다 다른 시,군,구 선택을 위한 리스트
+
   bool _isShared = false;
   List<String>? _selectedTag;
+
+  List<String> _cities = []; // 도,광역시마다 다른 시,군,구 선택을 위한 리스트
 
   @override
   void initState() {
@@ -53,6 +58,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
 
     // 전달된 값이 있으면 필드에 설정
     _courseNameController.text = widget.initialCourseName ?? '';
+    _courseDescriptionController.text = widget.initialDescription ?? '';
     _selectedProvince = widget.initialProvince;
     _selectedCity = widget.initialCity;
     _isShared = widget.initialIsShared ?? false;
@@ -70,6 +76,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
         "isShared": _isShared,
         "province": _selectedProvince,
         "city": _selectedCity,
+        "description": _courseDescriptionController.text,
         "tags": _selectedTag,
         "coordinates": widget.pathCoordinates,
       };
@@ -128,7 +135,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('이동 시간', style: TextStyle(fontSize: 10, color: DARK_GRAY_COLOR),),
+                          Text('이동 시간', style: smallTextStyle),
                           SizedBox(height: 8,),
                           Text('${widget.initialMoveTime}'),
                         ],
@@ -147,7 +154,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('공유 선택', style: TextStyle(fontSize: 10, color: DARK_GRAY_COLOR)),
+                        Text('공유 선택', style: smallTextStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -225,6 +232,27 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                   child: Text(value),
                 );
               }).toList(),
+            ),
+            SizedBox(height: 10),
+
+            // 코스 설명
+            TextFormField(
+              controller: _courseDescriptionController,
+              maxLength: 500,
+              minLines: 3,
+              maxLines: null,
+              decoration: InputDecoration(
+                  hintText: "코스에 대한 설명을 입력해 주세요",
+                  filled: true,
+                  fillColor: LIGHT_GRAY_COLOR,
+                  enabledBorder: defaultInputBorder,
+                  focusedBorder: defaultInputBorder),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return '코스에 대한 설명을 입력해 주세요';
+                }
+                return null;
+              },
             ),
             SizedBox(height: 10),
 

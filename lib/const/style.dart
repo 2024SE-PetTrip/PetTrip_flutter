@@ -33,3 +33,8 @@ NaverMapViewOptions defaultNaverMapOptions = NaverMapViewOptions(
   ),
   minZoom: 9,
 );
+
+TextStyle smallTextStyle = TextStyle(fontSize: 10, color: DARK_GRAY_COLOR);
+TextStyle titleTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 18);
+
+Divider defaultDivider =  Divider(thickness: 5, color: LIGHT_GRAY_COLOR,);
