@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/services/course_service.dart';
+import 'package:pettrip_fe/widgets/info_box.dart';
 
 import '../const/category.dart';
 import '../const/colors.dart';
@@ -126,20 +127,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
               children: [
                 // 이동 시간
                 Expanded(
-                  child: Container(
-                    height: 80,
-                    padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: LIGHT_GRAY_COLOR),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('이동 시간', style: smallTextStyle),
-                          SizedBox(height: 8,),
-                          Text('${widget.initialMoveTime}'),
-                        ],
-                      )),
+                  child: InfoBox(title: '이동 시간', content: '${widget.initialMoveTime}')
                 ),
                 SizedBox(width: 10),
 

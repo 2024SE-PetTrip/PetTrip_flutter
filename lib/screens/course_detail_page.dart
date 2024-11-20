@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/const/colors.dart';
 import 'package:pettrip_fe/const/style.dart';
+import 'package:pettrip_fe/widgets/add_comment.dart';
 import 'package:pettrip_fe/widgets/course_detail_map.dart';
 
 import '../models/course_model.dart';
@@ -97,78 +98,90 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
+
             defaultDivider,
-            SizedBox(height: 10),
 
-            Text('코스 정보'),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                // 이동 시간
-                Expanded(
-                    child: InfoBox(
-                  title: '이동 시간',
-                  content: widget.course.moveTime,
-                )),
-                SizedBox(
-                  width: 10,
-                ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('코스 정보'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      // 이동 시간
+                      Expanded(
+                          child: InfoBox(
+                        title: '이동 시간',
+                        content: widget.course.moveTime,
+                      )),
+                      SizedBox(
+                        width: 10,
+                      ),
 
-                // 이동 거리
-                Expanded(
-                    child: InfoBox(
-                  title: '이동 거리',
-                  content: '${widget.course.moveDistance}m',
-                )),
-              ],
-            ),
-            SizedBox(
-              height: 10,
+                      // 이동 거리
+                      Expanded(
+                          child: InfoBox(
+                        title: '이동 거리',
+                        content: '${widget.course.moveDistance}m',
+                      )),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  // 지역
+                  InfoBox(
+                    title: '지역',
+                    content: '${widget.course.province} ${widget.course.city}',
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  // 소개글
+                  Text('소개글'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(widget.course.description),
+                ],
+              ),
             ),
 
-            // 지역
-            InfoBox(
-              title: '지역',
-              content: '${widget.course.province} ${widget.course.city}',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-
-            // 소개글
-            Text('소개글'),
-            SizedBox(
-              height: 10,
-            ),
-            Text(widget.course.description),
-
-            SizedBox(
-              height: 10,
-            ),
             defaultDivider,
-            SizedBox(
-              height: 10,
-            ),
 
-            // 댓글
-            Text('댓글'),
-            TextButton(
-              child: Text("댓글 작성"),
-              style: defaultTextButtonStyle,
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      color: Colors.red,
-                      height: 200,
-                    );
-                  },
-                );
-              },
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 댓글
+                  Text('댓글'),
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      child: Text("댓글 작성"),
+                      style: defaultTextButtonStyle,
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.white,
+                          builder: (context) {
+                            return AddComment(courseID: widget.course.courseID);
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
