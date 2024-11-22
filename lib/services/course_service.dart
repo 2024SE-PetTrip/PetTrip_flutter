@@ -18,4 +18,15 @@ class CourseService {
       throw Exception("코스 서버 저장 실패: $e");
     }
   }
+
+  Future<void> likeCourse(String courseID) async {
+    try {
+      // TODO: URL 수정
+      final response = await _dio.post('url',
+          data: courseID);
+    } catch (e) {
+      print('Error: $e');
+      throw Exception("좋아요 누르기 실패: $e");
+    }
+  }
 }

@@ -1,21 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/const/colors.dart';
+import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/style.dart';
+import 'package:pettrip_fe/services/course_service.dart';
 import 'package:pettrip_fe/widgets/add_comment.dart';
 import 'package:pettrip_fe/widgets/course_detail_map.dart';
+import 'package:pettrip_fe/widgets/like_button.dart';
 
+import '../models/comment_model.dart';
 import '../models/course_model.dart';
+import '../widgets/comment_card.dart';
 import '../widgets/info_box.dart';
-import '../widgets/tag.dart';
+import '../widgets/tags.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final CourseModel course;
+  final List<CommentModel> comments;
+  final bool isLiked;
 
   const CourseDetailPage({
     super.key,
     required this.course,
+    this.comments = const [],
+    required this.isLiked,
   });
 
   @override
@@ -23,6 +31,8 @@ class CourseDetailPage extends StatefulWidget {
 }
 
 class _CourseDetailPageState extends State<CourseDetailPage> {
+  final CourseService _courseService = CourseService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +65,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       Text(widget.course.courseName, style: titleTextStyle),
 
                       // 좋아요 버튼
-                      IconButton(
-                        icon: Icon(CupertinoIcons.heart),
-                        onPressed: () {},
-                      )
+                      LikeButton(initialIsLiked: widget.isLiked, initialLikeCount: widget.course.likeCount, courseID: widget.course.courseID)
                     ],
                   ),
                   SizedBox(height: 10),
@@ -71,17 +78,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         width: 10,
                       ),
                       Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: widget.course.tags.map((tag) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Tag(tagName: tag),
-                              );
-                            }).toList(),
-                          ),
-                        ),
+                        child: Tags(tags: widget.course.tags,)
                       )
                     ],
                   ),
@@ -163,6 +160,21 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   // 댓글
                   Text('댓글'),
                   SizedBox(height: 20),
+
+                  // 댓글 리스트
+                  Column(
+                    children: widget.comments.map((comment) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: CommentCard(
+                          userImage: comment.userImage,
+                          userName: comment.userName,
+                          comment: comment.comment,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
@@ -174,7 +186,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                           isScrollControlled: true,
                           backgroundColor: Colors.white,
                           builder: (context) {
-                            return AddComment(courseID: widget.course.courseID);
+                            // TODO: 임시 UserID 바꾸기
+                            return AddComment(courseID: widget.course.courseID, userID: testUserID,);
                           },
                         );
                       },

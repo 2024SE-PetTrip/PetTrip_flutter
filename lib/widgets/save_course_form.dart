@@ -38,7 +38,7 @@ class SaveCourseForm extends StatefulWidget {
 }
 
 class _SaveCourseFormState extends State<SaveCourseForm> {
-  late CourseService _courseService;
+  final CourseService _courseService = CourseService();
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _courseNameController = TextEditingController();
@@ -54,8 +54,6 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
   @override
   void initState() {
     super.initState();
-
-    _courseService = CourseService();
 
     // 전달된 값이 있으면 필드에 설정
     _courseNameController.text = widget.initialCourseName ?? '';

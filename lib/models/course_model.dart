@@ -1,5 +1,7 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
+import 'comment_model.dart';
+
 class CourseModel {
   final String courseID;
   final String courseName;
@@ -11,6 +13,7 @@ class CourseModel {
   final String description;
   final List<String> tags;
   final List<NLatLng> coordinates;
+  final int likeCount;
 
   CourseModel({
     required this.courseID,
@@ -23,5 +26,6 @@ class CourseModel {
     required this.description,
     required this.tags,
     required this.coordinates,
+    required this.likeCount,
   });
 }

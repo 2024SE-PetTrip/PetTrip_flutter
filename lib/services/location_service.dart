@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-
-import '../const/secret_key.dart';
-import 'package:http/http.dart' as http;
 
 class LocationService {
   final List<NLatLng> pathCoordinates = []; // 경로 좌표 저장 리스트

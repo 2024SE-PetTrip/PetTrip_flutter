@@ -7,6 +7,7 @@ import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/secret_key.dart';
 import 'package:pettrip_fe/const/colors.dart';
 import 'package:pettrip_fe/screens/course_detail_page.dart';
+import 'package:pettrip_fe/screens/course_list_page.dart';
 import 'package:pettrip_fe/screens/course_maker_page.dart';
 
 void main() async {
@@ -47,7 +48,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _widgetOptions = <Widget>[
       CourseMakerPage(),
-      CourseDetailPage(course: dummyCourseData),
+      CourseListPage(),
       Placeholder(),
       Placeholder(),
       Placeholder(),

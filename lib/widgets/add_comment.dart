@@ -1,26 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pettrip_fe/services/comment_service.dart';
 
 import '../const/colors.dart';
 import '../const/style.dart';
 
 class AddComment extends StatelessWidget {
   final String courseID;
+  final String userID;
+  final TextEditingController _commentController = TextEditingController();
+  final CommentService _commentService = CommentService();
 
-  AddComment(
-      {super.key,
-      required this.courseID,});
+  AddComment({super.key, required this.courseID, required this.userID});
+
+  Future<void> _submitComment(context) async {
+    final commentData = {
+      "courseID": courseID,
+      "userID": userID,
+      "comment": _commentController.text,
+    };
+
+    try {
+      await _commentService.saveComment(commentData);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('댓글이 작성되었습니다')));
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("댓글 작성에 실패했습니다")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding:
-            EdgeInsets.fromLTRB(10, 10, 10, MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.fromLTRB(
+            10, 10, 10, MediaQuery.of(context).viewInsets.bottom),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Text("댓글 작성", style: titleTextStyle),
           SizedBox(height: 10),
           TextFormField(
+            controller: _commentController,
             maxLength: 300,
             minLines: 3,
             maxLines: 10,
@@ -36,8 +57,16 @@ class AddComment extends StatelessWidget {
               return null;
             },
           ),
-          SizedBox(height: 10,),
-          TextButton(onPressed: (){}, child: Text("작성 완료"), style: defaultTextButtonStyle,)
+          SizedBox(
+            height: 10,
+          ),
+          TextButton(
+            onPressed: () {
+              _submitComment(context);
+            },
+            style: defaultTextButtonStyle,
+            child: Text("작성 완료"),
+          )
         ]),
       ),
     );
