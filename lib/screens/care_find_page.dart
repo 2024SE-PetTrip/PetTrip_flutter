@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/colors.dart';
 import 'package:pettrip_fe/models/care_model.dart';
-import 'package:pettrip_fe/service/care_community_service.dart';
+import 'package:pettrip_fe/services/care_community_service.dart';
 import 'package:pettrip_fe/widgets/filter_button.dart';
 
 import 'package:pettrip_fe/screens/care_detail_page.dart';
