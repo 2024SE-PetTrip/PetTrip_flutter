@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:pettrip_fe/models/care_model.dart';
 
 class CareCommunityService{
-  static Future<List<Item>> fetchItems({String? title, String? location, String? breed}) async {
+  static Future<List<CareModel>> fetchItems({String? title, String? location, String? breed}) async {
     final queryParameters = {
       //TODO: 필터 구현
       //아래는 예시 코드
@@ -19,7 +19,7 @@ class CareCommunityService{
       final decodedData = utf8.decode(response.bodyBytes);
       final List data = json.decode(decodedData);
 
-      return data.map((data) => Item.fromJson(data)).toList();
+      return data.map((data) => CareModel.fromJson(data)).toList();
     }
     else {
       throw Exception("Failed to load data");
