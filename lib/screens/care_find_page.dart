@@ -21,7 +21,7 @@ class _CareFindPageState extends State<CareFindPage> {
   String? _searchLocation;
   String? _breed;
 
-  List<Item> _items = [];
+  List<CareModel> _items = [];
   bool _isLoading = false;
 
   Future<void> _fetchItems() async {

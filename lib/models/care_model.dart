@@ -1,18 +1,18 @@
-class Item {
+class CareModel {
   final String title;
   final String status;
   final String location;
   final String breed;
 
-  Item({
+  CareModel({
     required this.title,
     required this.status,
     required this.location,
     required this.breed,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
+  factory CareModel.fromJson(Map<String, dynamic> json) {
+    return CareModel(
       title: json['title'],
       status: json['status'],
       location: json['location'],

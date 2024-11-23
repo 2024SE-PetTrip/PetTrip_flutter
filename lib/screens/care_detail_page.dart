@@ -5,7 +5,7 @@ import 'package:pettrip_fe/models/care_model.dart';
 import 'package:pettrip_fe/widgets/info_box.dart';
 
 class CareDetailPage extends StatelessWidget {
-  final Item item;
+  final CareModel item;
 
   const CareDetailPage({super.key, required this.item});
 
