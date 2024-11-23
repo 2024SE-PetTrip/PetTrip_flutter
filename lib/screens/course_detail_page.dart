@@ -65,7 +65,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       Text(widget.course.courseName, style: titleTextStyle),
 
                       // 좋아요 버튼
-                      LikeButton(initialIsLiked: widget.isLiked, initialLikeCount: widget.course.likeCount, courseID: widget.course.courseID)
+                      LikeButton(initialIsLiked: widget.isLiked, initialLikeCount: widget.course.likeCount, courseID: widget.course.courseId)
                     ],
                   ),
                   SizedBox(height: 10),
@@ -89,7 +89,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                     children: [
                       Text('코드', style: smallTextStyle),
                       SizedBox(width: 10),
-                      Text(widget.course.courseID),
+                      Text(widget.course.courseId),
                     ],
                   ),
                 ],
@@ -123,7 +123,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       Expanded(
                           child: InfoBox(
                         title: '이동 거리',
-                        content: '${widget.course.moveDistance}m',
+                        content: '${widget.course.distance}m',
                       )),
                     ],
                   ),
@@ -187,7 +187,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                           backgroundColor: Colors.white,
                           builder: (context) {
                             // TODO: 임시 UserID 바꾸기
-                            return AddComment(courseID: widget.course.courseID, userID: testUserID,);
+                            return AddComment(courseID: widget.course.courseId, userID: testUserID,);
                           },
                         );
                       },

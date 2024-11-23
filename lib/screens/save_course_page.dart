@@ -26,12 +26,7 @@ class SaveCoursePage extends StatelessWidget {
           },
       ),
     ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates),
-        ),
-      ),
+      body: SaveCourseForm(initialMoveTime: trackedTime, pathCoordinates: pathCoordinates)
     );
   }
 }

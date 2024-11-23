@@ -52,7 +52,7 @@ class CourseCard extends StatelessWidget {
                 LikeButton(
                     initialIsLiked: isLiked,
                     initialLikeCount: course.likeCount,
-                    courseID: course.courseID)
+                    courseID: course.courseId)
               ],
             ),
             SizedBox(
