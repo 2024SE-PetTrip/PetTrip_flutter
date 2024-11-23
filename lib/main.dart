@@ -1,22 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
+import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pettrip_fe/const/dummy_data.dart';
+import 'package:pettrip_fe/const/secret_key.dart';
 import 'package:pettrip_fe/const/colors.dart';
+import 'package:pettrip_fe/screens/course_detail_page.dart';
+import 'package:pettrip_fe/screens/course_list_page.dart';
+import 'package:pettrip_fe/screens/course_maker_page.dart';
 import 'package:pettrip_fe/screens/care_service_page.dart';
 
-
 void main() async {
-  //await _initialize();
+  await _initialize();
   runApp(MaterialApp(home: const MainPage()));
 }
 
-/*
 Future<void> _initialize() async {
   // 네이버맵 초기화
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(
-      clientId: NAVER_MAP_KEY,
+      clientId: naverMapID,
       onAuthFailed: (error) {
         print('네이버맵 인증 오류: $error');
       });
@@ -28,8 +32,6 @@ Future<void> _initialize() async {
     openAppSettings();
   }
 }
-*/
-
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -46,9 +48,8 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      //CourseMakerPage(),
-      Placeholder(),
-      Placeholder(),
+      CourseMakerPage(),
+      CourseListPage(),
       Placeholder(),
       CareServicePage(),
       Placeholder(),
@@ -62,13 +63,13 @@ class _MainPageState extends State<MainPage> {
       // 하단바
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.pets), label: '코스생성'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: '코스찾기'),
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: '산책모임'),
-          BottomNavigationBarItem(icon: Icon(Icons.volunteer_activism), label: '돌봄요청'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '내정보')
-        ],
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.pets), label: '코스생성'),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: '코스찾기'),
+            BottomNavigationBarItem(icon: Icon(Icons.group), label: '산책모임'),
+            BottomNavigationBarItem(icon: Icon(Icons.volunteer_activism), label: '돌봄요청'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '내정보')
+          ],
         backgroundColor: Colors.white,
         selectedItemColor: MAIN_COLOR,
         unselectedItemColor: DARK_GRAY_COLOR,
@@ -80,7 +81,6 @@ class _MainPageState extends State<MainPage> {
             _selectedIndex = index;
           });
         },
-      ),
-    );
+      ),);
   }
 }
