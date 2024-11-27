@@ -6,6 +6,7 @@ import 'package:choice/choice.dart';
 
 class TagSelector extends StatelessWidget {
   final List<String> initialSelectedTags;
+  final List<String> tagList;
   final int maxTags;
   final ValueChanged<List<String>> onTagChanged;
 
@@ -14,6 +15,7 @@ class TagSelector extends StatelessWidget {
     required this.initialSelectedTags,
     required this.onTagChanged,
     this.maxTags = 3,
+    required this.tagList,
   });
 
   @override
@@ -50,7 +52,7 @@ class TagSelector extends StatelessWidget {
                 clearable: true,
                 value: formState.value ?? [],
                 onChanged: (val) => formState.didChange(val),
-                itemCount: courseTags.length,
+                itemCount: tagList.length,
                 itemBuilder: (selection, i) {
                   return ChoiceChip(
                     backgroundColor: LIGHT_GRAY_COLOR,
@@ -61,9 +63,9 @@ class TagSelector extends StatelessWidget {
                         color: Colors.transparent,
                       ),
                     ),
-                    selected: selection.selected(courseTags[i]),
-                    onSelected: selection.onSelected(courseTags[i]),
-                    label: Text(courseTags[i]),
+                    selected: selection.selected(tagList[i]),
+                    onSelected: selection.onSelected(tagList[i]),
+                    label: Text(tagList[i]),
                   );
                 },
                 listBuilder: ChoiceList.createWrapped(

@@ -10,6 +10,7 @@ import 'package:pettrip_fe/screens/course_detail_page.dart';
 import 'package:pettrip_fe/screens/course_list_page.dart';
 import 'package:pettrip_fe/screens/course_maker_page.dart';
 import 'package:pettrip_fe/screens/care_service_page.dart';
+import 'package:pettrip_fe/screens/create_group_page.dart';
 
 void main() async {
   await _initialize();
@@ -50,7 +51,7 @@ class _MainPageState extends State<MainPage> {
     _widgetOptions = <Widget>[
       CourseMakerPage(),
       CourseListPage(),
-      Placeholder(),
+      CreateGroupPage(),
       CareServicePage(),
       Placeholder(),
     ];

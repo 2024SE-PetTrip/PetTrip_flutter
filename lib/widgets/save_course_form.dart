@@ -100,8 +100,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
         if (widget.isUpload == false) {
           await _courseService.saveCourse(courseData);
         } else {
-          await _courseService.updateCourse(
-              widget.initialCourseId!, courseData);
+          await _courseService.updateCourse(widget.initialCourseId!, courseData);
         }
 
         // 성공 처리
@@ -121,136 +120,135 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // 코스 이름
-                TextFormField(
-                  controller: _courseNameController,
-                  decoration: InputDecoration(
-                      hintText: "코스명",
-                      filled: true,
-                      fillColor: LIGHT_GRAY_COLOR,
-                      enabledBorder: defaultInputBorder,
-                      focusedBorder: defaultInputBorder),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '코스 이름을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
+      padding: EdgeInsets.all(10),
+      child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              // 코스 이름
+              TextFormField(
+                controller: _courseNameController,
+                decoration: InputDecoration(
+                    labelText: "코스명",
+                    filled: true,
+                    fillColor: LIGHT_GRAY_COLOR,
+                    enabledBorder: defaultInputBorder,
+                    focusedBorder: defaultInputBorder),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '코스 이름을 입력해 주세요';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
 
-                Row(
-                  children: [
-                    // 이동 시간
-                    Expanded(
-                        child: InfoBox(
-                            title: '이동 시간',
-                            content: '${widget.initialMoveTime}')),
-                    SizedBox(width: 10),
+              Row(
+                children: [
+                  // 이동 시간
+                  Expanded(
+                      child: InfoBox(
+                          title: '이동 시간',
+                          content: '${widget.initialMoveTime}')),
+                  SizedBox(width: 10),
 
-                    // 공유 선택
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: LIGHT_GRAY_COLOR),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('공유 선택', style: smallTextStyle),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('전체공유'),
-                                CupertinoSwitch(
-                                  value: _status == 'ACTIVE',
-                                  activeColor: MAIN_COLOR,
-                                  onChanged: widget.isUpload
-                                      ? null
-                                      : (bool value) {
-                                          setState(() {
-                                            _status =
-                                                value ? 'ACTIVE' : 'PROTECTED';
-                                          });
-                                        },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                  // 공유 선택
+                  Expanded(
+                    child: Container(
+                      height: 80,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          color: LIGHT_GRAY_COLOR),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('공유 선택', style: smallTextStyle),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('전체공유'),
+                              CupertinoSwitch(
+                                value: _status == 'ACTIVE',
+                                activeColor: MAIN_COLOR,
+                                onChanged: widget.isUpload
+                                    ? null
+                                    : (bool value) {
+                                        setState(() {
+                                          _status =
+                                              value ? 'ACTIVE' : 'PROTECTED';
+                                        });
+                                      },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 20),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
 
-                // 지역 선택
-                ProvinceCitySelector(
-                  selectedProvince: _selectedProvince,
-                  selectedCity: _selectedCity,
-                  onProvinceChanged: (province) {
-                    setState(() {
-                      _selectedProvince = province;
-                      _selectedCity = null;
-                    });
-                  },
-                  onCityChanged: (city) {
-                    setState(() {
-                      _selectedCity = city;
-                    });
-                  },
-                ),
-                SizedBox(height: 10),
+              // 지역 선택
+              ProvinceCitySelector(
+                selectedProvince: _selectedProvince,
+                selectedCity: _selectedCity,
+                onProvinceChanged: (province) {
+                  setState(() {
+                    _selectedProvince = province;
+                    _selectedCity = null;
+                  });
+                },
+                onCityChanged: (city) {
+                  setState(() {
+                    _selectedCity = city;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
 
-                // 코스 설명
-                TextFormField(
-                  controller: _courseDescriptionController,
-                  maxLength: 500,
-                  minLines: 3,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                      hintText: "코스에 대한 설명을 입력해 주세요",
-                      filled: true,
-                      fillColor: LIGHT_GRAY_COLOR,
-                      enabledBorder: defaultInputBorder,
-                      focusedBorder: defaultInputBorder),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '코스에 대한 설명을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 10),
+              // 코스 설명
+              TextFormField(
+                controller: _courseDescriptionController,
+                maxLength: 500,
+                minLines: 3,
+                maxLines: null,
+                decoration: InputDecoration(
+                    hintText: "코스에 대한 설명을 입력해 주세요",
+                    filled: true,
+                    fillColor: LIGHT_GRAY_COLOR,
+                    enabledBorder: defaultInputBorder,
+                    focusedBorder: defaultInputBorder),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '코스에 대한 설명을 입력해 주세요';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
 
-                // 태그 선택 (Dropdown)
-                TagSelector(
-                  initialSelectedTags: _selectedTag ?? [],
-                  onTagChanged: (tags) {
-                    setState(() {
-                      _selectedTag = tags;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
+              // 태그 선택
+              TagSelector(
+                initialSelectedTags: _selectedTag ?? [],
+                tagList: courseTags,
+                onTagChanged: (tags) {
+                  setState(() {
+                    _selectedTag = tags;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
 
-                TextButton(
-                    onPressed: () {
-                      _submitForm();
-                    },
-                    child: Text('코스 등록'),
-                    style: defaultTextButtonStyle),
-              ],
-            )),
-      ),
+              TextButton(
+                  onPressed: () {
+                    _submitForm();
+                  },
+                  child: Text('코스 등록'),
+                  style: defaultTextButtonStyle),
+            ],
+          )),
     );
   }
 }

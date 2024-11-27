@@ -9,7 +9,7 @@ class CommentService{
   Future<void> addComment(int courseId, Map<String, dynamic> commentData) async {
     try {
       debugPrint(commentData.toString());
-      final response = await _dio.post('/addComment/$courseId',
+      final response = await _dio.post('/course/$courseId/addComment',
           data: commentData);
     } catch (e) {
       print('Error: $e');

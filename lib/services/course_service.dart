@@ -53,7 +53,7 @@ class CourseService {
   // 코스 좋아요
   Future<void> likeCourse(int courseId) async {
     try {
-      final response = await _dio.post('/$courseId/like',
+      final response = await _dio.post('/course/$courseId/like',
           data: courseId);
     } catch (e) {
       print('Error: $e');

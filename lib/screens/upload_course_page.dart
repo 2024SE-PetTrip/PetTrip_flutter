@@ -75,6 +75,7 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
           if (_selectedCourse != null)
             Expanded(child: SaveCourseForm(
               key: ValueKey(_selectedCourse),
+              initialCourseId: _selectedCourse!.courseId,
               initialCourseName: _selectedCourse!.courseName,
               initialMoveTime: _selectedCourse!.moveTime,
               initialProvince: _selectedCourse!.province,

@@ -18,7 +18,7 @@ class CourseMakerPage extends StatefulWidget {
 class _CourseMakerPageState extends State<CourseMakerPage> {
   late LocationService _locationService;
   bool _isTracking = false;
-  Stopwatch _stopwatch = Stopwatch();
+  final Stopwatch _stopwatch = Stopwatch();
   late Timer _timer;
   String _trackedTime = '00:00:00';
 
