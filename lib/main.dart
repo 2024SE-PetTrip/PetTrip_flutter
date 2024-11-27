@@ -9,6 +9,7 @@ import 'package:pettrip_fe/const/colors.dart';
 import 'package:pettrip_fe/screens/course_detail_page.dart';
 import 'package:pettrip_fe/screens/course_list_page.dart';
 import 'package:pettrip_fe/screens/course_maker_page.dart';
+import 'package:pettrip_fe/screens/care_service_page.dart';
 
 void main() async {
   await _initialize();
@@ -50,7 +51,7 @@ class _MainPageState extends State<MainPage> {
       CourseMakerPage(),
       CourseListPage(),
       Placeholder(),
-      Placeholder(),
+      CareServicePage(),
       Placeholder(),
     ];
   }
@@ -80,7 +81,6 @@ class _MainPageState extends State<MainPage> {
             _selectedIndex = index;
           });
         },
-      ),
-    );
+      ),);
   }
 }
