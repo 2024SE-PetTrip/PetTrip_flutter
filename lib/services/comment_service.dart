@@ -6,11 +6,10 @@ import '../const/secret_key.dart';
 class CommentService{
   final Dio _dio = Dio(BaseOptions(baseUrl: backendUrl));
 
-  Future<void> saveComment(Map<String, dynamic> commentData) async {
+  Future<void> addComment(int courseId, Map<String, dynamic> commentData) async {
     try {
       debugPrint(commentData.toString());
-      // TODO: URL 수정
-      final response = await _dio.post('url',
+      final response = await _dio.post('/addComment/$courseId',
           data: commentData);
     } catch (e) {
       print('Error: $e');

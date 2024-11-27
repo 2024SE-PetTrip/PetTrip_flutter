@@ -27,6 +27,7 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
   }
 
   Future<void> _loadCourses() async {
+    // TODO: 코스 가져오는 실제 메서드로 수정
     // try {
     //   _courses = await _courseService.getUserCourses(testUserID); // 코스 목록 가져오기
     //   setState(() {});
@@ -76,11 +77,11 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
               key: ValueKey(_selectedCourse),
               initialCourseName: _selectedCourse!.courseName,
               initialMoveTime: _selectedCourse!.moveTime,
-              initialStatus: 'ACTIVE',
               initialProvince: _selectedCourse!.province,
               initialCity: _selectedCourse!.city,
-              initialDescription: _selectedCourse!.description,
+              initialDescription: _selectedCourse!.courseDescription,
               initialTag: _selectedCourse!.tags,
+              isUpload: true,
             ))
         ],
       ),

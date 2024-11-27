@@ -8,9 +8,10 @@ import 'package:pettrip_fe/widgets/info_box.dart';
 
 import '../const/category.dart';
 import '../const/colors.dart';
+import '../const/dummy_data.dart';
 
 class SaveCourseForm extends StatefulWidget {
-
+  final int? initialCourseId;
   final String? initialCourseName;
   final String? initialMoveTime;
   final String? initialStatus;
@@ -19,10 +20,12 @@ class SaveCourseForm extends StatefulWidget {
   final String? initialDescription;
   final List<String>? initialTag;
   final List<NLatLng>? pathCoordinates;
+  final bool isUpload;
 
   // 생성자
   SaveCourseForm({
     super.key,
+    this.initialCourseId,
     this.initialCourseName,
     this.initialMoveTime,
     this.initialStatus,
@@ -31,6 +34,7 @@ class SaveCourseForm extends StatefulWidget {
     this.initialDescription,
     this.initialTag,
     this.pathCoordinates,
+    this.isUpload = false,
   });
 
   @override
@@ -42,7 +46,8 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _courseNameController = TextEditingController();
-  final TextEditingController _courseDescriptionController = TextEditingController();
+  final TextEditingController _courseDescriptionController =
+      TextEditingController();
   String? _selectedProvince;
   String? _selectedCity;
 
@@ -60,7 +65,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
     _courseDescriptionController.text = widget.initialDescription ?? '';
     _selectedProvince = widget.initialProvince;
     _selectedCity = widget.initialCity;
-    _status = widget.initialStatus ?? 'PROTECTED';
+    _status = widget.initialStatus ?? 'ACTIVE';
     _selectedTag = widget.initialTag;
 
     // 도/광역시에 따른 시/군/구 초기화
@@ -77,20 +82,32 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      // pathCoordinates를 변환
+      final transformedCoordinates = widget.isUpload
+          ? null
+          : widget.pathCoordinates?.map((coord) {
+              return {
+                "latitude": coord.latitude,
+                "longitude": coord.longitude,
+              };
+            }).toList();
+
       // 수집된 데이터
       final courseData = {
+        "userId": testUserId, // TODO: 실제 userID로 변경 필요
         "courseName": _courseNameController.text,
         "moveTime": widget.initialMoveTime,
         "status": _status,
         "province": _selectedProvince,
         "city": _selectedCity,
-        "description": _courseDescriptionController.text,
+        "courseDescription": _courseDescriptionController.text,
         "tags": _selectedTag,
-        "coordinates": widget.pathCoordinates,
+        "coordinates": transformedCoordinates,
       };
 
       try {
-        await _courseService.saveCourse(courseData);
+        widget.isUpload? await _courseService.saveCourse(courseData)
+        : await _courseService.updateCourse(widget.initialCourseId!, courseData);
 
         // 성공 처리
         ScaffoldMessenger.of(context).showSnackBar(
@@ -137,8 +154,9 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                   children: [
                     // 이동 시간
                     Expanded(
-                      child: InfoBox(title: '이동 시간', content: '${widget.initialMoveTime}')
-                    ),
+                        child: InfoBox(
+                            title: '이동 시간',
+                            content: '${widget.initialMoveTime}')),
                     SizedBox(width: 10),
 
                     // 공유 선택
@@ -160,11 +178,14 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                                 CupertinoSwitch(
                                   value: _status == 'ACTIVE',
                                   activeColor: MAIN_COLOR,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _status = value ? 'ACTIVE' : 'PROTECTED';
-                                    });
-                                  },
+                                  onChanged: widget.isUpload
+                                      ? null
+                                      : (bool value) {
+                                          setState(() {
+                                            _status =
+                                                value ? 'ACTIVE' : 'PROTECTED';
+                                          });
+                                        },
                                 ),
                               ],
                             ),
@@ -174,7 +195,9 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
 
                 // 도/광역시 선택
                 DropdownButtonFormField<String>(
@@ -200,7 +223,8 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                     }
                     return null;
                   },
-                  items: cityMap.keys.map<DropdownMenuItem<String>>((String value) {
+                  items: cityMap.keys
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -277,9 +301,10 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                     return Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: LIGHT_GRAY_COLOR,)
-                      ),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: LIGHT_GRAY_COLOR,
+                          )),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -294,10 +319,10 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                                 backgroundColor: LIGHT_GRAY_COLOR,
                                 selectedColor: MAIN_COLOR,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    side: BorderSide(
-                                      color: Colors.transparent,
-                                    ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                    color: Colors.transparent,
+                                  ),
                                 ),
                                 selected: selection.selected(courseTags[i]),
                                 onSelected: selection.onSelected(courseTags[i]),
@@ -326,10 +351,15 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
                     );
                   },
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 TextButton(
-                    onPressed: () {_submitForm();},
-                    child: Text('코스 등록'), style: defaultTextButtonStyle),
+                    onPressed: () {
+                      _submitForm();
+                    },
+                    child: Text('코스 등록'),
+                    style: defaultTextButtonStyle),
               ],
             )),
       ),

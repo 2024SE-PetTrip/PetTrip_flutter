@@ -6,22 +6,21 @@ import '../const/colors.dart';
 import '../const/style.dart';
 
 class AddComment extends StatelessWidget {
-  final String courseID;
-  final String userID;
+  final int courseId;
+  final int userId;
   final TextEditingController _commentController = TextEditingController();
   final CommentService _commentService = CommentService();
 
-  AddComment({super.key, required this.courseID, required this.userID});
+  AddComment({super.key, required this.courseId, required this.userId});
 
   Future<void> _submitComment(context) async {
     final commentData = {
-      "courseID": courseID,
-      "userID": userID,
-      "comment": _commentController.text,
+      "userId": userId,
+      "commentContent": _commentController.text,
     };
 
     try {
-      await _commentService.saveComment(commentData);
+      await _commentService.addComment(courseId, commentData);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('댓글이 작성되었습니다')));
       Navigator.pop(context);
