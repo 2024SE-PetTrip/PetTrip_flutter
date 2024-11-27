@@ -12,7 +12,7 @@ import '../models/comment_model.dart';
 import '../models/course_model.dart';
 import '../widgets/comment_card.dart';
 import '../widgets/info_box.dart';
-import '../widgets/tags.dart';
+import '../widgets/tag_scroll_view.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final CourseModel course;
@@ -78,7 +78,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                         width: 10,
                       ),
                       Expanded(
-                        child: Tags(tags: widget.course.tags,)
+                        child: TagScrollView(tags: widget.course.tags,)
                       )
                     ],
                   ),

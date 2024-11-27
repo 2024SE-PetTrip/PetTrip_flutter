@@ -5,7 +5,7 @@ import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/models/course_model.dart';
 import 'package:pettrip_fe/screens/course_detail_page.dart';
 import 'package:pettrip_fe/widgets/like_button.dart';
-import 'package:pettrip_fe/widgets/tags.dart';
+import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 
 import '../const/colors.dart';
 
@@ -61,7 +61,7 @@ class CourseCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Tags(tags: course.tags),
+                TagScrollView(tags: course.tags),
                 Padding(
                   padding: const EdgeInsets.only(right: 5),
                   child: Container(
