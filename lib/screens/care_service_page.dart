@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import './care_find_page.dart';
+import 'package:pettrip_fe/screens/care_find_page.dart';
+import 'package:pettrip_fe/screens/chat_home_page.dart';
 
 class CareServicePage extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class _CareServicePageState extends State<CareServicePage> {
         body: TabBarView(
           children: [
             Center(child: CareFindPage()), // 돌봄찾기
-            Center(child: Text('채팅 화면 내용')), // 채팅방
+            Center(child: ChatHomePage()), // 채팅방
           ],
         ),
       ),
