@@ -17,4 +17,16 @@ class WalkGroupService {
       throw Exception("산책 모임 서버 저장 실패: $e");
     }
   }
+
+  // 참가 신청
+  Future<void> submitApplicant(int userId) async {
+    try {
+      final response = await _dio.post('url', // TODO: url 수정
+          data: userId);
+    } catch (e) {
+      print('Error: $e');
+      throw Exception("산책 모임 서버 저장 실패: $e");
+    }
+  }
+  //
 }

@@ -110,6 +110,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
 
                 // 그룹 이름
                 TextFormField(
+                  maxLength: 15,
                   decoration: InputDecoration(
                       labelText: '모임명',
                       filled: true,
@@ -384,12 +385,14 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 SizedBox(height: 20),
 
                 // 제출 버튼
-                TextButton(
-                  onPressed: () {
-                    _submitForm();
-                  },
-                  child: Text('모임 등록'),
-                  style: defaultTextButtonStyle,
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      _submitForm();
+                    },
+                    child: Text('모임 등록'),
+                    style: defaultTextButtonStyle,
+                  ),
                 ),
               ],
             ),

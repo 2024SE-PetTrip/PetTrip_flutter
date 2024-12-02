@@ -175,8 +175,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                     }).toList(),
                   ),
 
-                  Align(
-                    alignment: Alignment.center,
+                  Center(
                     child: TextButton(
                       child: Text("댓글 작성"),
                       style: defaultTextButtonStyle,

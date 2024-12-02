@@ -23,6 +23,7 @@ class CourseCard extends StatelessWidget {
       onTap:(){ Navigator.push(
         context,
         MaterialPageRoute(
+          // TODO: 실제 댓글 받아오는 로직으로 수정
           builder: (context) => CourseDetailPage(course: course, comments: [dummyCommentData1, dummyCommentData2, dummyCommentData3], isLiked: isLiked,),
         ),
       );},
@@ -39,16 +40,23 @@ class CourseCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      course.courseName,
-                      style: titleTextStyle,
-                    ),
-                    SizedBox(width: 10),
-                    Text('${course.province} ${course.city}', style: smallTextStyle),
-                  ],
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          course.courseName,
+                          style: titleTextStyle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Text('${course.province} ${course.city}', style: smallTextStyle),
+                    ],
+                  ),
                 ),
+                SizedBox(width: 20),
                 LikeButton(
                     initialIsLiked: isLiked,
                     initialLikeCount: course.likeCount,

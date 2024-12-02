@@ -19,7 +19,7 @@ class _CourseListPageState extends State<CourseListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white, title: Text('코스 찾기')),
-      body: CourseCard(
+      body: CourseCard( // TODO: 코스 리스트 불러오는 로직 추가
         course: dummyCourseData1,
         isLiked: false,
       ),

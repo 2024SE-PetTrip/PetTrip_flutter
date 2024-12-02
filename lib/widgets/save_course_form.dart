@@ -128,6 +128,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
               // 코스 이름
               TextFormField(
                 controller: _courseNameController,
+                maxLength: 15,
                 decoration: InputDecoration(
                     labelText: "코스명",
                     filled: true,
