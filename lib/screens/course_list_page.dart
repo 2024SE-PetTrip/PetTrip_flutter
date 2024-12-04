@@ -25,12 +25,12 @@ class _CourseListPageState extends State<CourseListPage> {
   bool _isFilterApplied = false; // 핕터 적용 여부
 
   // TODO: 코스 목록 가져오는 로직 추가
-  List<CourseModel> _filteredCourses = dummyCourses; // 필터링 된 코스
+  List<CourseModel> _filteredCourses = allCourses; // 필터링 된 코스
 
   // 코스 필터링 메서드
   void _filterCourses() {
     setState(() {
-      _filteredCourses = dummyCourses.where((course) {
+      _filteredCourses = allCourses.where((course) {
         final matchesTitle = _searchTitle == null ||
             course.courseName
                 .toLowerCase()
@@ -39,7 +39,7 @@ class _CourseListPageState extends State<CourseListPage> {
                 course.province == _selectedProvince) &&
             (_selectedCity == null || course.city == _selectedCity);
         final matchesTags = _selectedTags.isEmpty ||
-            _selectedTags.any((tag) => course.tags.contains(tag));
+            _selectedTags.every((tag) => course.tags.contains(tag));
 
         return matchesTitle && matchesLocation && matchesTags;
       }).toList();
@@ -70,7 +70,9 @@ class _CourseListPageState extends State<CourseListPage> {
             });
           },
           onTagsChanged: (tags) {
-            _selectedTags = tags;
+            setState(() {
+              _selectedTags = tags;
+            });
           },
           onApply: () {
             setState(() {

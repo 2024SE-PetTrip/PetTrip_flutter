@@ -65,7 +65,7 @@ class FilterModal extends StatelessWidget {
                     });
                   },
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
                 Text(
                   '태그',
                   style: titleTextStyle,
@@ -75,8 +75,10 @@ class FilterModal extends StatelessWidget {
                   initialSelectedTags: tempTags,
                   tagList: tagList,
                   onTagChanged: (tags) {
-                    tempTags = tags;
-                    onTagsChanged(tags);
+                    setState((){
+                      tempTags = tags;
+                      onTagsChanged(tags);
+                    });
                   },
                 ),
                 const SizedBox(height: 16),

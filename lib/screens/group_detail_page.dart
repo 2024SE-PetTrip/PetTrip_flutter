@@ -127,7 +127,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                     // 지역
                     InfoBox(
                       title: '지역',
-                      content: widget.walkGroup.groupAddress,
+                      content: '${widget.walkGroup.province} ${widget.walkGroup.city}'
                     ),
                     SizedBox(height: 10),
 

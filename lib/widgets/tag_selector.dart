@@ -51,7 +51,10 @@ class TagSelector extends StatelessWidget {
                 multiple: true,
                 clearable: true,
                 value: formState.value ?? [],
-                onChanged: (val) => formState.didChange(val),
+                onChanged: (val) {
+                  formState.didChange(val);
+                  onTagChanged(val);
+                },
                 itemCount: tagList.length,
                 itemBuilder: (selection, i) {
                   return ChoiceChip(

@@ -8,7 +8,8 @@ class WalkGroupModel {
   final int maxParticipants;
   final int maxPetsPerUser;
   final String groupDescription;
-  final String groupAddress;
+  final String province;
+  final String city;
   final List<String> tags;
 
   WalkGroupModel({
@@ -21,11 +22,16 @@ class WalkGroupModel {
     required this.maxParticipants,
     required this.maxPetsPerUser,
     required this.groupDescription,
-    required this.groupAddress,
+    required this.province,
+    required this.city,
     required this.tags,
   });
 
   factory WalkGroupModel.fromJson(Map<String, dynamic> json) {
+    final addressParts = (json['groupAddress'] as String).split(' ');
+    final province = addressParts.isNotEmpty ? addressParts[0] : '';
+    final city = addressParts.length > 1 ? addressParts[1] : '';
+
     return WalkGroupModel(
       creatorId: json['creatorId'] as int,
       groupName: json['groupName'] as String,
@@ -36,7 +42,8 @@ class WalkGroupModel {
       maxParticipants: json['maxParticipants'] as int,
       maxPetsPerUser: json['maxPetsPerUser'] as int,
       groupDescription: json['groupDescription'] as String,
-      groupAddress: json['groupAddress'] as String,
+      province: province,
+      city: city,
       tags: List<String>.from(json['tags']),
     );
   }

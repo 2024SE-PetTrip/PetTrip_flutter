@@ -56,7 +56,7 @@ class GroupCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    '${walkGroup.groupAddress}',
+                    '${walkGroup.province} ${walkGroup.city}',
                     style: smallTextStyle,
                   )
                 ],
