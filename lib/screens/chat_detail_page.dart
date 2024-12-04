@@ -3,7 +3,6 @@ import 'package:pettrip_fe/models/chat_room_model.dart';
 import 'package:pettrip_fe/models/chat_message_model.dart';
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:pettrip_fe/services/chat_message_service.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
@@ -18,7 +17,7 @@ class ChatDetailPage extends StatefulWidget {
 class _ChatDetailPageState extends State<ChatDetailPage> {
   late StompClient stompClient;
   late ChatMessageService chatMessageService;
-  TextEditingController _messageController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
   List<ChatMessageModel> _messages = [];
   bool isLoading = true;
 
@@ -32,6 +31,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   @override
   void dispose() {
+    _messageController.dispose();
     stompClient.deactivate();
     super.dispose();
   }
@@ -60,6 +60,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         onConnect: _onWebSocketConnect,
         onWebSocketError: (error) => print('WebSocket error: $error'),
         onDisconnect: (frame) => print('WebSocket disconnected'),
+        onStompError: (frame) => print("Stomp error: ${frame.body}"),
+        reconnectDelay: Duration(seconds: 5) // 재연결 딜레이
       ),
     );
     stompClient.activate();
