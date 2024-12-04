@@ -55,7 +55,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChatDetailPage()
+                              builder: (context) => ChatDetailPage(room: _chatRooms[index])
                           )
                       );
                     },
