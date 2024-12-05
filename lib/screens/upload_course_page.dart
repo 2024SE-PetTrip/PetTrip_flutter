@@ -27,14 +27,14 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
   }
 
   Future<void> _loadCourses() async {
-    // TODO: 코스 가져오는 실제 메서드로 수정
-    // try {
-    //   _courses = await _courseService.getUserCourses(testUserID); // 코스 목록 가져오기
-    //   setState(() {});
-    // } catch (e) {
-    //   print('코스 목록 로드 실패: $e');
-    // }
-    _courses = [dummyCourseData1, dummyCourseData2];
+    try {
+      _courses = await _courseService.getUserCourses(testUserId);
+      setState(() {});
+    } catch (e) {
+      print('코스 목록 로드 실패: $e');
+    }
+    // TODO: 테스트 코스 삭제
+    // _courses = [dummyCourseData1, dummyCourseData2];
   }
 
   @override

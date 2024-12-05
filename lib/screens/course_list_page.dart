@@ -4,6 +4,7 @@ import 'package:pettrip_fe/const/category.dart';
 import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/models/course_model.dart';
 import 'package:pettrip_fe/screens/upload_course_page.dart';
+import 'package:pettrip_fe/services/course_service.dart';
 import 'package:pettrip_fe/widgets/course_card.dart';
 import 'package:pettrip_fe/widgets/filter_modal.dart';
 
@@ -17,6 +18,8 @@ class CourseListPage extends StatefulWidget {
 }
 
 class _CourseListPageState extends State<CourseListPage> {
+  final CourseService _courseService = CourseService();
+
   // 검색 및 필터링 관련 상태 변수
   String? _searchTitle; // 검색어
   String? _selectedProvince; // 선택된 도/광역시
@@ -24,13 +27,20 @@ class _CourseListPageState extends State<CourseListPage> {
   List<String> _selectedTags = []; // 선택된 태그
   bool _isFilterApplied = false; // 핕터 적용 여부
 
-  // TODO: 코스 목록 가져오는 로직 추가
-  List<CourseModel> _filteredCourses = allCourses; // 필터링 된 코스
+  late List<CourseModel> _allCourses; // 모든 코스
+  late List<CourseModel> _filteredCourses; // 필터링 된 코스
+
+  @override
+  Future<void> initState() async {
+    _allCourses = await _courseService.getAllCourses();
+    _filteredCourses = _allCourses;
+    super.initState();
+  }
 
   // 코스 필터링 메서드
   void _filterCourses() {
     setState(() {
-      _filteredCourses = allCourses.where((course) {
+      _filteredCourses = _allCourses.where((course) {
         final matchesTitle = _searchTitle == null ||
             course.courseName
                 .toLowerCase()

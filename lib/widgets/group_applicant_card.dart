@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 
 import '../const/colors.dart';
 import '../const/style.dart';
+import '../services/walk_group_service.dart';
 
 class GroupApplicantCard extends StatelessWidget {
   final String userImage;
   final String userName;
+  final int userId;
+  final int groupId;
 
   final VoidCallback onAccept;
   final VoidCallback onReject;
 
-  const GroupApplicantCard(
-      {super.key,
-      required this.userImage,
-      required this.userName,
-      required this.onAccept,
-      required this.onReject});
+  final WalkGroupService _groupService = WalkGroupService();
+
+  GroupApplicantCard({super.key,
+    required this.userImage,
+    required this.userName,
+    required this.onAccept,
+    required this.onReject, required this.userId, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +43,14 @@ class GroupApplicantCard extends StatelessWidget {
           ),
           Row(
             children: [
+              // 거절 버튼
               TextButton(
-                onPressed: onReject,
+                onPressed: () async {
+                  try {
+                    await _groupService.rejectApplicant(groupId, userId);
+                    onReject;
+                  } catch (e) {}
+                },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                   backgroundColor: LIGHT_GRAY_COLOR,
@@ -48,8 +58,15 @@ class GroupApplicantCard extends StatelessWidget {
                 child: Text('거절'),
               ),
               SizedBox(width: 5),
+
+              // 수락 버튼
               TextButton(
-                onPressed: onAccept,
+                onPressed: () async {
+                  try {
+                    await _groupService.acceptApplicant(groupId, userId);
+                    onAccept;
+                  } catch (e) {}
+                },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: MAIN_COLOR,

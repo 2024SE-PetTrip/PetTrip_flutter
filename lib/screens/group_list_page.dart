@@ -4,6 +4,7 @@ import 'package:pettrip_fe/const/category.dart';
 import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/models/walk_group_model.dart';
 import 'package:pettrip_fe/screens/create_group_page.dart';
+import 'package:pettrip_fe/services/walk_group_service.dart';
 
 import '../const/colors.dart';
 import '../widgets/filter_modal.dart';
@@ -17,6 +18,8 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
+  final WalkGroupService _groupService = WalkGroupService();
+
   // 검색 및 필터링 관련 상태 변수
   String? _searchTitle; // 검색어
   String? _selectedProvince; // 선택된 도/광역시
@@ -24,8 +27,15 @@ class _GroupListPageState extends State<GroupListPage> {
   List<String> _selectedTags = []; // 선택된 태그
   bool _isFilterApplied = false; // 핕터 적용 여부
 
-  // TODO: 그룹 목록 가져오는 로직 추가
-  List<WalkGroupModel> _filteredGroups = allGroups; // 필터링 된 그룹
+  late List<WalkGroupModel> _allGroups; // 모든 코스
+  late List<WalkGroupModel> _filteredGroups; // 필터링 된 코스
+
+  @override
+  Future<void> initState() async {
+    _allGroups = await _groupService.getAllGroups();
+    _filteredGroups = _allGroups;
+    super.initState();
+  }
 
   // 코스 필터링 메서드
   void _filterGroups() {

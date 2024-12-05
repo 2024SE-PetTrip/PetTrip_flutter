@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 
 import '../const/colors.dart';
 import '../const/style.dart';
+import '../services/walk_group_service.dart';
 
 class GroupMemberCard extends StatelessWidget {
   final String userImage;
   final String userName;
+  final int userId;
+  final int groupId;
 
   final bool isCreator;
   final VoidCallback onRemove;
 
-  const GroupMemberCard({super.key, required this.userImage, required this.userName, required this.isCreator, required this.onRemove});
+  final WalkGroupService _groupService = WalkGroupService();
+
+  GroupMemberCard({super.key, required this.userImage, required this.userName, required this.isCreator, required this.onRemove, required this.userId, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,12 @@ class GroupMemberCard extends StatelessWidget {
             ],
           ),
           isCreator? TextButton(
-            onPressed: onRemove,
+            onPressed: () async {
+              try {
+                await _groupService.removeMember(groupId, userId);
+                onRemove;
+              } catch (e) {}
+            },
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: WARNING_COLOR,

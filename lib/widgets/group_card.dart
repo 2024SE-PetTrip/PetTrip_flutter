@@ -7,31 +7,52 @@ import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 
 import '../const/colors.dart';
 import '../const/dummy_data.dart';
+import '../services/walk_group_service.dart';
 
-class GroupCard extends StatelessWidget {
+class GroupCard extends StatefulWidget {
   final WalkGroupModel walkGroup;
 
   const GroupCard({super.key, required this.walkGroup});
 
   @override
+  State<GroupCard> createState() => _GroupCardState();
+}
+
+class _GroupCardState extends State<GroupCard> {
+  final WalkGroupService _walkGroupService = WalkGroupService();
+
+  List<Map<String, String>> applicants = [];
+  List<Map<String, String>> members = [];
+
+  Future<void> _fetchData() async {
+    try {
+      final result = await _walkGroupService.getApplicantsAndMembers(
+        widget.walkGroup.groupId,
+        widget.walkGroup.creatorId,
+      );
+
+      setState(() {
+        applicants = result['applicants']!;
+        members = result['members']!;
+      });
+    } catch (e) {
+      print("멤버 불러오기 오류: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          // TODO: 실제 참가신청자 받아오는 로직으로 수정
+        onTap: () async {
+          await _fetchData();
+
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => GroupDetailPage(
-                        walkGroup: walkGroup,
-                        applicants: [
-                          {'userImage': testUserImage, 'userName': '유저1'},
-                          {'userImage': testUserImage, 'userName': '유저2'}
-                        ],
-                        members: [
-                          {'userImage': testUserImage, 'userName': '유저3'},
-                          {'userImage': testUserImage, 'userName': '유저4'},
-                          {'userImage': testUserImage, 'userName': '유저5'}
-                        ],
+                        walkGroup: widget.walkGroup,
+                        applicants: applicants,
+                        members: members,
                       )));
         },
         child: Container(
@@ -48,7 +69,7 @@ class GroupCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      walkGroup.groupName,
+                      widget.walkGroup.groupName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: titleTextStyle,
@@ -56,7 +77,7 @@ class GroupCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    '${walkGroup.province} ${walkGroup.city}',
+                    '${widget.walkGroup.province} ${widget.walkGroup.city}',
                     style: smallTextStyle,
                   )
                 ],
@@ -65,19 +86,21 @@ class GroupCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TagScrollView(tags: walkGroup.tags),
-                  Padding(padding: EdgeInsets.only(right: 5),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: POINT_COLOR,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                  TagScrollView(tags: widget.walkGroup.tags),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                      decoration: BoxDecoration(
+                        color: POINT_COLOR,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Text(
+                        '${widget.walkGroup.maxParticipants}명',
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
-                    child: Text(
-                    '${walkGroup.maxParticipants}명',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                  ),),
+                  ),
                 ],
               )
             ],

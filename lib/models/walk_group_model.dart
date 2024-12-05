@@ -1,4 +1,5 @@
 class WalkGroupModel {
+  final int groupId;
   final int creatorId;
   final String groupName;
   final int courseId;
@@ -13,6 +14,7 @@ class WalkGroupModel {
   final List<String> tags;
 
   WalkGroupModel({
+    required this.groupId,
     required this.creatorId,
     required this.groupName,
     required this.courseId,
@@ -33,6 +35,7 @@ class WalkGroupModel {
     final city = addressParts.length > 1 ? addressParts[1] : '';
 
     return WalkGroupModel(
+      groupId: json['groupId'] as int,
       creatorId: json['creatorId'] as int,
       groupName: json['groupName'] as String,
       courseId: json['courseId'] as int,

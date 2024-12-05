@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/models/walk_group_model.dart';
+import 'package:pettrip_fe/services/walk_group_service.dart';
 import 'package:pettrip_fe/widgets/group_member_card.dart';
 
+import '../const/dummy_data.dart';
 import '../widgets/group_applicant_card.dart';
 import '../widgets/info_box.dart';
 import '../widgets/tag_scroll_view.dart';
@@ -13,8 +15,8 @@ class GroupDetailPage extends StatefulWidget {
   final WalkGroupModel walkGroup;
 
   // TODO: 자료형 수정
-  final List<Map<String, String>> applicants;
-  final List<Map<String, String>> members;
+  final List<Map<String, dynamic>> applicants;
+  final List<Map<String, dynamic>> members;
 
   const GroupDetailPage(
       {super.key,
@@ -27,22 +29,49 @@ class GroupDetailPage extends StatefulWidget {
 }
 
 class _GroupDetailPageState extends State<GroupDetailPage> {
-  late bool _isCreator = true; // TODO: 작성자 확인 로직 추가
+  final WalkGroupService _groupService = WalkGroupService();
 
-  void acceptApplicant(Map<String, String> applicant) {
+  late bool _isCreator = true; // TODO: 작성자 확인 로직 추가
+  late bool _isApplicantOrMember = false; // TODO: 참가 신청자 / 멤버 확인 로직 추가
+
+  // 참가 신청
+  Future<void> submitApplicant() async {
+    try {
+      // TODO: 실제 아이디로 바꾸기
+      await _groupService.submitApplicant(widget.walkGroup.groupId, testUserId);
+
+      // 성공 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("신청되었습니다")),
+      );
+      setState(() {
+        _isApplicantOrMember = true;
+      });
+    } catch(e) {
+      // 실패 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("신청에 실패했습니다")),
+      );
+    }
+  }
+
+  // 신청 수락
+  void acceptApplicant(Map<String, dynamic> applicant) {
     setState(() {
       widget.applicants.remove(applicant);
       widget.members.add(applicant);
     });
   }
 
-  void rejectApplicant(Map<String, String> applicant) {
+  // 신청 거절
+  void rejectApplicant(Map<String, dynamic> applicant) {
     setState(() {
       widget.applicants.remove(applicant);
     });
   }
 
-  void removeMember(Map<String, String> member) {
+  // 멤버 삭제
+  void removeMember(Map<String, dynamic> member) {
     setState(() {
       widget.members.remove(member);
     });
@@ -198,6 +227,8 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: GroupApplicantCard(
+                                      groupId: widget.walkGroup.groupId,
+                                      userId: applicant["userId"]!,
                                       userImage: applicant["userImage"]!,
                                       userName: applicant["userName"]!,
                                       onAccept: () =>
@@ -229,6 +260,8 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: GroupMemberCard(
+                            groupId: widget.walkGroup.groupId,
+                            userId: member["userId"]!,
                             userImage: member["userImage"]!,
                             userName: member["userName"]!,
                             onRemove: () => removeMember(member),
@@ -238,13 +271,15 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                       }).toList(),
                     ),
 
-                    _isCreator
+                    _isCreator || _isApplicantOrMember
                         ? SizedBox()
                         : Center(
                             child: TextButton(
                               child: Text("참가 신청"),
                               style: defaultTextButtonStyle,
-                              onPressed: () {},
+                              onPressed: () {
+                                submitApplicant();
+                              },
                             ),
                           )
                   ],

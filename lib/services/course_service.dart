@@ -16,7 +16,7 @@ class CourseService {
           data: courseData);
     } catch (e) {
       print('Error: $e');
-      throw Exception("코스 서버 저장 실패: $e");
+      throw Exception("코스 서버에 저장 실패: $e");
     }
   }
 
@@ -32,29 +32,44 @@ class CourseService {
     }
   }
 
-  // 유저의 저장 코스 모두 불러오기
-  Future<List<CourseModel>> getUserCourses(String userId) async {
+  // 모든 공개 코스 불러오기
+  Future<List<CourseModel>> getAllCourses() async {
     try {
-      // TODO: URL 수정
-      final response = await _dio.get('url');
+      final response = await _dio.get('/course/all');
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         return data.map((json) => CourseModel.fromJson(json)).toList();
       } else {
-        throw Exception("수리 요청 목록 로딩 실패: ${response.statusCode}");
+        throw Exception("전체 코스 불러오기 실패: ${response.statusCode}");
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception("수리 요청 목록 로딩 실패: $e");
+      throw Exception("전체 코스 불러오기 실패: $e");
+    }
+  }
+
+  // 유저의 비공개 코스 모두 불러오기
+  Future<List<CourseModel>> getUserCourses(int userId) async {
+    try {
+      final response = await _dio.get('/course/user/$userId');
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((json) => CourseModel.fromJson(json)).toList();
+      } else {
+        throw Exception("유저 코스 불러오기 실패: ${response.statusCode}");
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception("유저 코스 불러오기 실패: $e");
     }
   }
 
   // 코스 좋아요
   Future<void> likeCourse(int courseId) async {
     try {
-      final response = await _dio.post('/course/$courseId/like',
-          data: courseId);
+      final response = await _dio.post('/course/$courseId/like');
     } catch (e) {
       print('Error: $e');
       throw Exception("좋아요 누르기 실패: $e");
@@ -62,11 +77,9 @@ class CourseService {
   }
 
   // 코스 좋아요 취소
-  Future<void> disLikeCourse(int courseID) async {
+  Future<void> disLikeCourse(int courseId) async {
     try {
-      // TODO: URL 수정
-      final response = await _dio.post('url',
-          data: courseID);
+      final response = await _dio.post('/course/$courseId/dislike');
     } catch (e) {
       print('Error: $e');
       throw Exception("좋아요 취소 실패: $e");
