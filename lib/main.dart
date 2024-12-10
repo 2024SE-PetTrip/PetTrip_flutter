@@ -13,6 +13,8 @@ import 'package:pettrip_fe/screens/care_service_page.dart';
 import 'package:pettrip_fe/screens/create_group_page.dart';
 import 'package:pettrip_fe/screens/group_detail_page.dart';
 import 'package:pettrip_fe/screens/group_list_page.dart';
+import 'package:pettrip_fe/services/api_client.dart';
+import 'package:pettrip_fe/services/login_service.dart';
 
 void main() async {
   await _initialize();
@@ -33,6 +35,16 @@ Future<void> _initialize() async {
   var status = await Permission.location.status;
   if (requestStatus.isPermanentlyDenied || status.isPermanentlyDenied) {
     openAppSettings();
+  }
+
+  // TODO: admin 로그인 수정
+  // 로그인 처리
+  final loginService = LoginService();
+  final jwtToken = await loginService.login('angelsusum@gmail.com', 'a12341234!');
+  if (jwtToken != null) {
+    print('로그인 성공. JWT Token: $jwtToken');
+    // 이후 ApiClient 사용 (JWT 토큰 포함)
+    final apiClient = ApiClient(jwtToken);
   }
 }
 

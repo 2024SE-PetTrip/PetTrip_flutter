@@ -21,8 +21,8 @@ class GroupCard extends StatefulWidget {
 class _GroupCardState extends State<GroupCard> {
   final WalkGroupService _walkGroupService = WalkGroupService();
 
-  List<Map<String, String>> applicants = [];
-  List<Map<String, String>> members = [];
+  List<Map<String, dynamic>> applicants = [];
+  List<Map<String, dynamic>> members = [];
 
   Future<void> _fetchData() async {
     try {
@@ -45,14 +45,13 @@ class _GroupCardState extends State<GroupCard> {
     return GestureDetector(
         onTap: () async {
           await _fetchData();
-
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => GroupDetailPage(
                         walkGroup: widget.walkGroup,
-                        applicants: applicants,
-                        members: members,
+                        applicants: applicants ?? [],
+                        members: members ?? [],
                       )));
         },
         child: Container(

@@ -6,8 +6,8 @@ import '../const/style.dart';
 import '../services/walk_group_service.dart';
 
 class GroupApplicantCard extends StatelessWidget {
-  final String userImage;
-  final String userName;
+  final String profileImageUrl;
+  final String nickname;
   final int userId;
   final int groupId;
 
@@ -16,11 +16,14 @@ class GroupApplicantCard extends StatelessWidget {
 
   final WalkGroupService _groupService = WalkGroupService();
 
-  GroupApplicantCard({super.key,
-    required this.userImage,
-    required this.userName,
-    required this.onAccept,
-    required this.onReject, required this.userId, required this.groupId});
+  GroupApplicantCard(
+      {super.key,
+      required this.profileImageUrl,
+      required this.nickname,
+      required this.onAccept,
+      required this.onReject,
+      required this.userId,
+      required this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +37,22 @@ class GroupApplicantCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              ClipOval(
-                  child: Image.network(userImage,
-                      width: 30, height: 30, fit: BoxFit.cover)),
+              profileImageUrl != 'null'
+                  ? ClipOval(
+                      child: Image.network(profileImageUrl,
+                          width: 30, height: 30, fit: BoxFit.cover))
+                  : SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: ClipOval(
+                        child: Icon(
+                          Icons.person,
+                          size: 20,
+                        ),
+                      ),
+                    ),
               SizedBox(width: 10),
-              Text(userName)
+              Text(nickname)
             ],
           ),
           Row(
@@ -48,7 +62,7 @@ class GroupApplicantCard extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await _groupService.rejectApplicant(groupId, userId);
-                    onReject;
+                    onReject();
                   } catch (e) {}
                 },
                 style: TextButton.styleFrom(
@@ -64,7 +78,7 @@ class GroupApplicantCard extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await _groupService.acceptApplicant(groupId, userId);
-                    onAccept;
+                    onAccept();
                   } catch (e) {}
                 },
                 style: TextButton.styleFrom(

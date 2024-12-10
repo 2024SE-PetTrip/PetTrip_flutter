@@ -30,11 +30,23 @@ class _CourseListPageState extends State<CourseListPage> {
   late List<CourseModel> _allCourses; // 모든 코스
   late List<CourseModel> _filteredCourses; // 필터링 된 코스
 
+  bool _isLoading = true; // 로딩 상태
+
   @override
-  Future<void> initState() async {
-    _allCourses = await _courseService.getAllCourses();
-    _filteredCourses = _allCourses;
+  void initState() {
     super.initState();
+    _loadCourses();
+  }
+
+  Future<void> _loadCourses() async {
+    setState(() {
+      _isLoading = true; // 로딩 시작
+    });
+    _allCourses = await _courseService.getAllCourses();
+    setState(() {
+      _filteredCourses = _allCourses;
+      _isLoading = false;
+    });
   }
 
   // 코스 필터링 메서드
@@ -100,87 +112,98 @@ class _CourseListPageState extends State<CourseListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white, title: Text('코스 찾기')),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
               children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        // 검색창
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: '코스 이름 검색',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: MAIN_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: MAIN_COLOR),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _searchTitle = value;
+                            _filterCourses();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 5),
+
+                      // 필터링 버튼
+                      TextButton(
+                          onPressed: () {
+                            if (_isFilterApplied) {
+                              // 필터가 적용 중이라면 초기화
+                              setState(() {
+                                _selectedProvince = null;
+                                _selectedCity = null;
+                                _selectedTags = [];
+                                _isFilterApplied = false;
+                                _filterCourses(); // 필터 초기화 후 다시 필터링
+                              });
+                            } else {
+                              // 필터 모달을 열기
+                              _showFilterModal(context);
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            side: BorderSide(color: MAIN_COLOR),
+                            backgroundColor:
+                                _isFilterApplied ? MAIN_COLOR : Colors.white,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.filter_list,
+                                  color: _isFilterApplied
+                                      ? Colors.white
+                                      : Colors.black),
+                              Text(
+                                _isFilterApplied ? '초기화' : '필터링',
+                                style: TextStyle(
+                                    color: _isFilterApplied
+                                        ? Colors.white
+                                        : Colors.black),
+                              )
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
+                // 필터링 된 코스 목록
                 Expanded(
-                  // 검색창
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: '코스 이름 검색',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: MAIN_COLOR),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: MAIN_COLOR),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      _searchTitle = value;
-                      _filterCourses();
+                  child: ListView.builder(
+                    itemCount: _filteredCourses.length,
+                    itemBuilder: (context, index) {
+                      final course = _filteredCourses[index];
+                      return CourseCard(
+                        course: course,
+                        isLiked: false,
+                      );
                     },
                   ),
                 ),
-                SizedBox(width: 5),
-
-                // 필터링 버튼
-                TextButton(
-                    onPressed: () {
-                      if (_isFilterApplied) {
-                        // 필터가 적용 중이라면 초기화
-                        setState(() {
-                          _selectedProvince = null;
-                          _selectedCity = null;
-                          _selectedTags = [];
-                          _isFilterApplied = false;
-                          _filterCourses(); // 필터 초기화 후 다시 필터링
-                        });
-                      } else {
-                        // 필터 모달을 열기
-                        _showFilterModal(context);
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      side: BorderSide(color: MAIN_COLOR),
-                      backgroundColor: _isFilterApplied ? MAIN_COLOR : Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.filter_list, color: _isFilterApplied ? Colors.white : Colors.black),
-                        Text(_isFilterApplied ?
-                          '초기화' : '필터링',
-                          style: TextStyle(color: _isFilterApplied ? Colors.white : Colors.black),
-                        )
-                      ],
-                    )),
               ],
             ),
-          ),
-          // 필터링 된 코스 목록
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredCourses.length,
-              itemBuilder: (context, index) {
-                final course = _filteredCourses[index];
-                return CourseCard(
-                  course: course,
-                  isLiked: false,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

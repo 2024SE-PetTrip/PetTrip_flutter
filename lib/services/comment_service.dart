@@ -2,13 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../const/secret_key.dart';
+import 'api_client.dart';
 
 class CommentService{
-  final Dio _dio = Dio(BaseOptions(baseUrl: backendUrl));
+  final Dio _dio = ApiClient(null).dio;
 
   Future<void> addComment(int courseId, Map<String, dynamic> commentData) async {
     try {
-      debugPrint(commentData.toString());
       final response = await _dio.post('/course/$courseId/addComment',
           data: commentData);
     } catch (e) {

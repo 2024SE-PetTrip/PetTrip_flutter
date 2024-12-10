@@ -14,7 +14,6 @@ import '../widgets/tag_scroll_view.dart';
 class GroupDetailPage extends StatefulWidget {
   final WalkGroupModel walkGroup;
 
-  // TODO: 자료형 수정
   final List<Map<String, dynamic>> applicants;
   final List<Map<String, dynamic>> members;
 
@@ -228,9 +227,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: GroupApplicantCard(
                                       groupId: widget.walkGroup.groupId,
-                                      userId: applicant["userId"]!,
-                                      userImage: applicant["userImage"]!,
-                                      userName: applicant["userName"]!,
+                                      userId: applicant["userId"],
+                                      profileImageUrl: applicant["profileImageUrl"] ?? '',
+                                      nickname: applicant["nickname"],
                                       onAccept: () =>
                                           acceptApplicant(applicant),
                                       onReject: () =>
@@ -261,9 +260,9 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: GroupMemberCard(
                             groupId: widget.walkGroup.groupId,
-                            userId: member["userId"]!,
-                            userImage: member["userImage"]!,
-                            userName: member["userName"]!,
+                            userId: member["userId"],
+                            profileImageUrl: member["profileImageUrl"] ?? '',
+                            nickname: member["nickname"],
                             onRemove: () => removeMember(member),
                             isCreator: _isCreator,
                           ),

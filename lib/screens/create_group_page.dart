@@ -45,7 +45,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       _formKey.currentState!.save();
 
       final groupData = {
-        "creatorID": testUserId, // TODO: 실제 userID로 변경 필요
+        "creatorId": testUserId, // TODO: 실제 userID로 변경 필요
         "groupName": _groupName,
         "courseId": _courseId,
         "startDate": _startDateController.text,

@@ -30,24 +30,29 @@ class WalkGroupModel {
   });
 
   factory WalkGroupModel.fromJson(Map<String, dynamic> json) {
-    final addressParts = (json['groupAddress'] as String).split(' ');
+    final groupAddress = json['groupAddress'] as String? ?? '';
+    final addressParts = groupAddress.split(' ');
     final province = addressParts.isNotEmpty ? addressParts[0] : '';
     final city = addressParts.length > 1 ? addressParts[1] : '';
 
     return WalkGroupModel(
-      groupId: json['groupId'] as int,
-      creatorId: json['creatorId'] as int,
-      groupName: json['groupName'] as String,
-      courseId: json['courseId'] as int,
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
-      walkingDate: DateTime.parse(json['walkingDate']),
-      maxParticipants: json['maxParticipants'] as int,
-      maxPetsPerUser: json['maxPetsPerUser'] as int,
-      groupDescription: json['groupDescription'] as String,
-      province: province,
-      city: city,
-      tags: List<String>.from(json['tags']),
+      groupId: json['groupId'] != null ? json['groupId'] as int : 0,
+      creatorId: json['creatorId'] != null ? json['creatorId'] as int : 0,
+      groupName: json['groupName'] as String? ?? '',
+      courseId: json['courseId'] != null ? json['courseId'] as int : 0,
+      startDate: json['startDate'] != null ? DateTime.parse(json['startDate']) : DateTime.now(),
+      endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : DateTime.now(),
+      walkingDate: json['walkingDate'] != null ? DateTime.parse(json['walkingDate']) : DateTime.now(),
+      maxParticipants: json['maxParticipants'] != null ? json['maxParticipants'] as int : 0,
+      maxPetsPerUser: json['maxPetsPerUser'] != null ? json['maxPetsPerUser'] as int : 0,
+      groupDescription: json['groupDescription'] as String? ?? '',
+      province: province ?? '',
+      city: city ?? '',
+      tags: json['tags'] != null
+          ? (json['tags'] as List)
+          .map((tag) => tag['tagName'] as String? ?? '')
+          .toList()
+          : [],
     );
   }
 }

@@ -8,7 +8,7 @@ class CourseModel {
   final int courseId;
   final String courseName;
   final String moveTime;
-  final String distance;
+  final double distance;
   final String status;
   final String province;
   final String city;
@@ -34,14 +34,14 @@ class CourseModel {
   // fromJson method
   factory CourseModel.fromJson(Map<String, dynamic> json) {
     return CourseModel(
-      courseId: json['courseID'] as int,
+      courseId: json['courseId'] as int,
       courseName: json['courseName'] as String,
       moveTime: json['moveTime'] as String,
-      distance: json['moveDistance'] as String,
+      distance: ((json['distance'] as double) * 10).roundToDouble() / 10,
       status: json['status'] as String,
       province: json['province'] as String,
       city: json['city'] as String,
-      courseDescription: json['description'] as String,
+      courseDescription: json['courseDescription'] as String,
       tags: List<String>.from(json['tags'] as List<dynamic>),
       coordinates: (json['coordinates'] as List<dynamic>)
           .map((coord) => NLatLng(

@@ -30,17 +30,29 @@ class _GroupListPageState extends State<GroupListPage> {
   late List<WalkGroupModel> _allGroups; // 모든 코스
   late List<WalkGroupModel> _filteredGroups; // 필터링 된 코스
 
+  bool _isLoading = true; // 로딩 상태
+
   @override
-  Future<void> initState() async {
-    _allGroups = await _groupService.getAllGroups();
-    _filteredGroups = _allGroups;
+  void initState() {
     super.initState();
+    _loadGroups();
+  }
+
+  Future<void> _loadGroups() async {
+    setState(() {
+      _isLoading = true; // 로딩 시작
+    });
+    _allGroups = await _groupService.getAllGroups();
+    setState(() {
+      _filteredGroups = _allGroups;
+      _isLoading = false;
+    });
   }
 
   // 코스 필터링 메서드
   void _filterGroups() {
     setState(() {
-      _filteredGroups = allGroups.where((group) {
+      _filteredGroups = _allGroups.where((group) {
         final matchesTitle = _searchTitle == null ||
             group.groupName.toLowerCase().contains(_searchTitle!.toLowerCase());
         final matchesLocation = (_selectedProvince == null ||
@@ -98,92 +110,95 @@ class _GroupListPageState extends State<GroupListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white, title: Text('모임 찾기')),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
               children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        // 검색창
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: '모임 이름 검색',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: MAIN_COLOR),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: MAIN_COLOR),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _searchTitle = value;
+                            _filterGroups();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 5),
+
+                      // 필터링 버튼
+                      TextButton(
+                          onPressed: () {
+                            if (_isFilterApplied) {
+                              // 필터가 적용 중이라면 초기화
+                              setState(() {
+                                _selectedProvince = null;
+                                _selectedCity = null;
+                                _selectedTags = [];
+                                _isFilterApplied = false;
+                                _filterGroups(); // 필터 초기화 후 다시 필터링
+                              });
+                            } else {
+                              // 필터 모달을 열기
+                              _showFilterModal(context);
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            side: BorderSide(color: MAIN_COLOR),
+                            backgroundColor:
+                                _isFilterApplied ? MAIN_COLOR : Colors.white,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.filter_list,
+                                  color: _isFilterApplied
+                                      ? Colors.white
+                                      : Colors.black),
+                              Text(
+                                _isFilterApplied ? '초기화' : '필터링',
+                                style: TextStyle(
+                                    color: _isFilterApplied
+                                        ? Colors.white
+                                        : Colors.black),
+                              )
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
+                // 필터링 된 코스 목록
                 Expanded(
-                  // 검색창
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: '모임 이름 검색',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: MAIN_COLOR),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: MAIN_COLOR),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      _searchTitle = value;
-                      _filterGroups();
+                  child: ListView.builder(
+                    itemCount: _filteredGroups.length,
+                    itemBuilder: (context, index) {
+                      final group = _filteredGroups[index];
+                      return GroupCard(walkGroup: group);
                     },
                   ),
                 ),
-                SizedBox(width: 5),
-
-                // 필터링 버튼
-                TextButton(
-                    onPressed: () {
-                      if (_isFilterApplied) {
-                        // 필터가 적용 중이라면 초기화
-                        setState(() {
-                          _selectedProvince = null;
-                          _selectedCity = null;
-                          _selectedTags = [];
-                          _isFilterApplied = false;
-                          _filterGroups(); // 필터 초기화 후 다시 필터링
-                        });
-                      } else {
-                        // 필터 모달을 열기
-                        _showFilterModal(context);
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      side: BorderSide(color: MAIN_COLOR),
-                      backgroundColor:
-                          _isFilterApplied ? MAIN_COLOR : Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.filter_list,
-                            color:
-                                _isFilterApplied ? Colors.white : Colors.black),
-                        Text(
-                          _isFilterApplied ? '초기화' : '필터링',
-                          style: TextStyle(
-                              color: _isFilterApplied
-                                  ? Colors.white
-                                  : Colors.black),
-                        )
-                      ],
-                    )),
               ],
             ),
-          ),
-          // 필터링 된 코스 목록
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredGroups.length,
-              itemBuilder: (context, index) {
-                final group = _filteredGroups[index];
-                return GroupCard(
-                  walkGroup: group
-                );
-              },
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

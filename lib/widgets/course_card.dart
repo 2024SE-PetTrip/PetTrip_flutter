@@ -80,7 +80,7 @@ class CourseCard extends StatelessWidget {
                     ),
                     child: Text(
                       (course.moveTime.split(':')[0] != '00' ? '${course.moveTime.split(':')[0]}hr ' : '') +
-                          (course.moveTime.split(':')[1] != '00' || course.moveTime.split(':')[0] != '00' ? '${course.moveTime.split(':')[1]}min' : ''),
+                          ('${course.moveTime.split(':')[1]}min'),
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
