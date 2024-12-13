@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/style.dart';
+import 'package:pettrip_fe/models/comment_model.dart';
 import 'package:pettrip_fe/models/course_model.dart';
 import 'package:pettrip_fe/screens/course_detail_page.dart';
+import 'package:pettrip_fe/services/comment_service.dart';
+import 'package:pettrip_fe/services/course_service.dart';
 import 'package:pettrip_fe/widgets/like_button.dart';
 import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 
@@ -12,21 +15,29 @@ import '../const/colors.dart';
 class CourseCard extends StatelessWidget {
   final CourseModel course;
   final bool isLiked;
+  late List<CommentModel> _comments;
 
-  const CourseCard(
-      {super.key, required this.course, required this.isLiked,
-      });
+  CourseCard({
+    super.key,
+    required this.course,
+    required this.isLiked,
+  });
+
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:(){ Navigator.push(
-        context,
-        MaterialPageRoute(
-          // TODO: 실제 댓글 받아오는 로직으로 수정
-          builder: (context) => CourseDetailPage(course: course, comments: [dummyCommentData1, dummyCommentData2, dummyCommentData3], isLiked: isLiked,),
-        ),
-      );},
+      onTap: () async{
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CourseDetailPage(
+              course: course,
+              isLiked: isLiked,
+            ),
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(10),
@@ -52,7 +63,8 @@ class CourseCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text('${course.province} ${course.city}', style: smallTextStyle),
+                      Text('${course.province} ${course.city}',
+                          style: smallTextStyle),
                     ],
                   ),
                 ),
@@ -79,7 +91,9 @@ class CourseCard extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Text(
-                      (course.moveTime.split(':')[0] != '00' ? '${course.moveTime.split(':')[0]}hr ' : '') +
+                      (course.moveTime.split(':')[0] != '00'
+                              ? '${course.moveTime.split(':')[0]}hr '
+                              : '') +
                           ('${course.moveTime.split(':')[1]}min'),
                       style: TextStyle(fontSize: 12),
                     ),

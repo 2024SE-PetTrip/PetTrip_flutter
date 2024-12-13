@@ -28,13 +28,12 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
 
   Future<void> _loadCourses() async {
     try {
+      // TODO: 실제 아이디로 변경
       _courses = await _courseService.getUserCourses(testUserId);
       setState(() {});
     } catch (e) {
       print('코스 목록 로드 실패: $e');
     }
-    // TODO: 테스트 코스 삭제
-    // _courses = [dummyCourseData1, dummyCourseData2];
   }
 
   @override
