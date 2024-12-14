@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pettrip_fe/const/category.dart';
+import 'package:pettrip_fe/services/token_storage.dart';
 import 'package:pettrip_fe/services/walk_group_service.dart';
 import 'package:pettrip_fe/widgets/province_city_selector.dart';
 
 import '../const/colors.dart';
 import '../const/dummy_data.dart';
 import '../const/style.dart';
+import '../services/token_parser.dart';
 import '../widgets/tag_selector.dart';
 
 class CreateGroupPage extends StatefulWidget {
@@ -39,13 +41,27 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   final TextEditingController _walkingDateController = TextEditingController();
 
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
+  int? _userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUserId();
+  }
+
+  Future<void> _initializeUserId() async {
+    final userId = await getUserId();
+    setState(() {
+      _userId = userId;
+    });
+  }
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       final groupData = {
-        "creatorId": testUserId, // TODO: 실제 userID로 변경 필요
+        "creatorId": _userId,
         "groupName": _groupName,
         "courseId": _courseId,
         "startDate": _startDateController.text,

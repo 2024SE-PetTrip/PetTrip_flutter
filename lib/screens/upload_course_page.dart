@@ -6,6 +6,8 @@ import '../const/dummy_data.dart';
 import '../const/style.dart';
 import '../models/course_model.dart';
 import '../services/course_service.dart';
+import '../services/token_parser.dart';
+import '../services/token_storage.dart';
 import '../widgets/save_course_form.dart';
 
 class UploadCoursePage extends StatefulWidget {
@@ -20,16 +22,25 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
   List<CourseModel> _courses = [];
   CourseModel? _selectedCourse;
 
+  int? _userId;
+
   @override
   void initState() {
     super.initState();
+    _initializeUserId();
     _loadCourses();
+  }
+
+  Future<void> _initializeUserId() async {
+    final userId = await getUserId();
+    setState(() {
+      _userId = userId;
+    });
   }
 
   Future<void> _loadCourses() async {
     try {
-      // TODO: 실제 아이디로 변경
-      _courses = await _courseService.getUserCourses(testUserId);
+      _courses = await _courseService.getUserCourses(_userId!);
       setState(() {});
     } catch (e) {
       print('코스 목록 로드 실패: $e');

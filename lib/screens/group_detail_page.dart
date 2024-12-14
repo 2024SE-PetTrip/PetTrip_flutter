@@ -7,6 +7,8 @@ import 'package:pettrip_fe/services/walk_group_service.dart';
 import 'package:pettrip_fe/widgets/group_member_card.dart';
 
 import '../const/dummy_data.dart';
+import '../services/token_parser.dart';
+import '../services/token_storage.dart';
 import '../widgets/group_applicant_card.dart';
 import '../widgets/info_box.dart';
 import '../widgets/tag_scroll_view.dart';
@@ -30,14 +32,35 @@ class GroupDetailPage extends StatefulWidget {
 class _GroupDetailPageState extends State<GroupDetailPage> {
   final WalkGroupService _groupService = WalkGroupService();
 
-  late bool _isCreator = true; // TODO: 작성자 확인 로직 추가
-  late bool _isApplicantOrMember = false; // TODO: 참가 신청자 / 멤버 확인 로직 추가
+  late bool _isCreator = false;
+  late bool _isApplicantOrMember = false;
+
+  int? _userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUserId();
+  }
+
+  Future<void> _initializeUserId() async {
+    final userId = await getUserId();
+    setState(() {
+      _userId = userId;
+
+      // 작성자인지 확인
+      _isCreator = widget.walkGroup.creatorId == userId;
+
+      // 신청자나 멤버에 포함되어 있는지 확인
+      _isApplicantOrMember = widget.applicants.any((applicant) => applicant['userId'] == userId) ||
+          widget.members.any((member) => member['userId'] == userId);
+    });
+  }
 
   // 참가 신청
   Future<void> submitApplicant() async {
     try {
-      // TODO: 실제 아이디로 바꾸기
-      await _groupService.submitApplicant(widget.walkGroup.groupId, testUserId);
+      await _groupService.submitApplicant(widget.walkGroup.groupId, _userId!);
 
       // 성공 처리
       ScaffoldMessenger.of(context).showSnackBar(

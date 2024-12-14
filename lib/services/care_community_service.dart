@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:pettrip_fe/models/care_model.dart';
 
+import 'api_client.dart';
+
 class CareCommunityService{
-  static Future<List<CareModel>> fetchItems({String? title, String? location, String? breed}) async {
+  final Dio _dio = ApiClient(null).dio;
+
+  Future<List<CareModel>> fetchItems({String? title, String? location, String? breed}) async {
     final queryParameters = {
       //TODO: 필터 구현
       //아래는 예시 코드
@@ -11,15 +16,12 @@ class CareCommunityService{
       if (location != null && location.isNotEmpty) 'location': location,
       if (breed != null && breed.isNotEmpty) 'breed' : breed,
     };
-    String baseUri = ' '; // TODO: URI 입력
-    final uri = Uri.parse(baseUri).replace(queryParameters: queryParameters);
-    final response = await http.get(uri);
+    String baseUri = '/care/all'; // TODO: URI 입력
+    final response = await _dio.get(baseUri, queryParameters: queryParameters);
 
     if(response.statusCode == 200){
-      final decodedData = utf8.decode(response.bodyBytes);
-      final List data = json.decode(decodedData);
-
-      return data.map((data) => CareModel.fromJson(data)).toList();
+      final List data = response.data;
+      return data.map((item) => CareModel.fromJson(item)).toList();
     }
     else {
       throw Exception("Failed to load data");

@@ -24,13 +24,15 @@ class _CareFindPageState extends State<CareFindPage> {
   List<CareModel> _items = [];
   bool _isLoading = false;
 
+  final CareCommunityService careCommunityService = CareCommunityService();
+
   Future<void> _fetchItems() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final items = await CareCommunityService.fetchItems(
+      final items = await careCommunityService.fetchItems(
         //TODO:필터링 관련 넘겨줄 파라미터
         title: _searchTitle,
         location: _searchLocation,

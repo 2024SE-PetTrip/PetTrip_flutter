@@ -20,6 +20,25 @@ OutlineInputBorder defaultInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(15)),
 );
 
+InputDecoration roundedInputDecoration() {
+  return InputDecoration(
+    filled: false,
+    contentPadding: EdgeInsets.symmetric(horizontal: 20),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide(color: DARK_GRAY_COLOR), // 기본 테두리 색상
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide(color: DARK_GRAY_COLOR), // 활성화 상태
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide(color: DARK_GRAY_COLOR), // 포커스 상태
+    ),
+  );
+}
+
 NaverMapViewOptions defaultNaverMapOptions = NaverMapViewOptions(
   logoAlign: NLogoAlign.rightTop,
   logoMargin: EdgeInsets.all(10),

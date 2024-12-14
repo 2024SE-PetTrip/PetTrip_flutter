@@ -13,12 +13,15 @@ import 'package:pettrip_fe/screens/care_service_page.dart';
 import 'package:pettrip_fe/screens/create_group_page.dart';
 import 'package:pettrip_fe/screens/group_detail_page.dart';
 import 'package:pettrip_fe/screens/group_list_page.dart';
+import 'package:pettrip_fe/screens/join_page.dart';
+import 'package:pettrip_fe/screens/login_page.dart';
+import 'package:pettrip_fe/screens/main_page.dart';
 import 'package:pettrip_fe/services/api_client.dart';
 import 'package:pettrip_fe/services/login_service.dart';
 
 void main() async {
   await _initialize();
-  runApp(MaterialApp(home: const MainPage()));
+  runApp(MyApp());
 }
 
 Future<void> _initialize() async {
@@ -36,66 +39,18 @@ Future<void> _initialize() async {
   if (requestStatus.isPermanentlyDenied || status.isPermanentlyDenied) {
     openAppSettings();
   }
-
-  // TODO: admin 로그인 수정
-  // 로그인 처리
-  final loginService = LoginService();
-  final jwtToken = await loginService.login('angelsusum@gmail.com', 'a12341234!');
-  if (jwtToken != null) {
-    print('로그인 성공. JWT Token: $jwtToken');
-    // 이후 ApiClient 사용 (JWT 토큰 포함)
-    final apiClient = ApiClient(jwtToken);
-  }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
-  late final List<Widget> _widgetOptions;
-
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions = <Widget>[
-      CourseMakerPage(),
-      CourseListPage(),
-      GroupListPage(),
-      CareServicePage(),
-      Placeholder(),
-    ];
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
-      // 하단바
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.pets), label: '코스생성'),
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: '코스찾기'),
-            BottomNavigationBarItem(icon: Icon(Icons.group), label: '산책모임'),
-            BottomNavigationBarItem(icon: Icon(Icons.volunteer_activism), label: '돌봄요청'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: '내정보')
-          ],
-        backgroundColor: Colors.white,
-        selectedItemColor: MAIN_COLOR,
-        unselectedItemColor: DARK_GRAY_COLOR,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        onTap:(int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/login', // 앱 실행 시 로그인 화면부터 표시
+      routes: {
+        '/login': (context) => LoginPage(), // 로그인 화면
+        '/home': (context) => MainPage(), // 메인 화면
+      },
+    );
   }
 }

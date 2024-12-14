@@ -4,6 +4,7 @@ import 'package:pettrip_fe/const/colors.dart';
 import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/services/course_service.dart';
+import 'package:pettrip_fe/services/token_parser.dart';
 import 'package:pettrip_fe/widgets/add_comment.dart';
 import 'package:pettrip_fe/widgets/course_detail_map.dart';
 import 'package:pettrip_fe/widgets/like_button.dart';
@@ -11,6 +12,7 @@ import 'package:pettrip_fe/widgets/like_button.dart';
 import '../models/comment_model.dart';
 import '../models/course_model.dart';
 import '../services/comment_service.dart';
+import '../services/token_storage.dart';
 import '../widgets/comment_card.dart';
 import '../widgets/info_box.dart';
 import '../widgets/tag_scroll_view.dart';
@@ -33,20 +35,32 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   final CommentService _commentService = CommentService();
   late List<CommentModel> _comments;
   bool _isLoading = false;
+  int? _userId;
 
   Future<void> _loadComments() async {
     setState(() {
       _isLoading = true;
     });
     _comments = await _commentService.getCourseComments(widget.course.courseId);
+    debugPrint("댓글실행");
     setState(() {
       _isLoading = false;
+    });
+  }
+
+
+  Future<void> _initializeUserId() async {
+    final userId = await getUserId();
+    debugPrint("유저아이디: $userId");
+    setState(() {
+      _userId = userId;
     });
   }
 
   @override
   void initState() {
     super.initState();
+    _initializeUserId();
     _loadComments();
   }
 
@@ -209,11 +223,10 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 isScrollControlled: true,
                                 backgroundColor: Colors.white,
                                 builder: (context) {
-                                  // TODO: 임시 UserID 바꾸기
                                   return AddComment(
                                     loadComments: _loadComments,
                                     courseId: widget.course.courseId,
-                                    userId: testUserId,
+                                    userId: _userId!,
                                   );
                                 },
                               );

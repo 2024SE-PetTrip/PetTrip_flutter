@@ -17,7 +17,7 @@ class ApiClient {
     // 인터셉터 추가
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
-        print('Request to ${options.uri}');
+        print('Request: ${options.method} ${options.uri} | Headers: ${options.headers}');
         return handler.next(options);
       },
       onError: (DioError e, handler) {
