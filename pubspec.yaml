@@ -43,7 +43,8 @@ dependencies:
   choice: ^2.3.2
   dio: ^5.7.0
   stomp_dart_client: ^2.1.0
-  intl: ^0.19.0
+  intl: ^0.20.1
+  image_picker: ^1.1.2
 
 
 dev_dependencies:

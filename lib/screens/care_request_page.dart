@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/models/care_model.dart';
 import 'package:pettrip_fe/services/care_community_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class CareRequestPage extends StatefulWidget {
   const CareRequestPage({super.key});
@@ -12,9 +15,24 @@ class CareRequestPage extends StatefulWidget {
 class _CareRequestPageState extends State<CareRequestPage> {
   final CareCommunityService _careCommunityService = CareCommunityService();
 
+  File? _selectedImage;
+  final _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   // Controllers for text fields
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final DateFormat _dateFormat = DateFormat('yyyy-MM-dd / HH:mm ');
 
   // State for dropdowns and image URL
   String? _selectedProvince;
@@ -24,6 +42,8 @@ class _CareRequestPageState extends State<CareRequestPage> {
   // Mock data (Replace with real IDs from your app's logic)
   final int requesterId = 1; // Example user ID
   final int petId = 101; // Example pet ID
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +64,32 @@ class _CareRequestPageState extends State<CareRequestPage> {
             children: [
               const SizedBox(height: 16),
               // Image Placeholder
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.camera_alt, size: 40, color: Colors.grey),
-                      SizedBox(height: 8),
-                      Text("대표 사진을 추가하세요"),
-                    ],
+              GestureDetector(
+                onTap: _pickImage, // 사진 선택 동작
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: _selectedImage == null
+                      ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.camera_alt, size: 40, color: Colors.grey),
+                        SizedBox(height: 8),
+                        Text("대표 사진을 추가하세요"),
+                      ],
+                    ),
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      _selectedImage!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               ),
@@ -125,10 +157,10 @@ class _CareRequestPageState extends State<CareRequestPage> {
 
               // Date Input
               TextField(
+                controller: _dateController,
                 readOnly: true,
                 decoration: const InputDecoration(
                   labelText: "돌봄 희망일",
-                  hintText: "2024-11-15 / 12:30",
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
@@ -141,8 +173,21 @@ class _CareRequestPageState extends State<CareRequestPage> {
                     lastDate: DateTime(2025),
                   );
                   if (selectedDate != null) {
+                    TimeOfDay? selectedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now()
+                    );
+                  }
+                  if (selectedDate != null) {
                     setState(() {
-                      _startDate = selectedDate;
+                      _startDate = DateTime(
+                        selectedDate.year,
+                        selectedDate.month,
+                        selectedDate.day,
+                        selectedDate.hour,
+                        selectedDate.minute,
+                      );
+                      _dateController.text = _dateFormat.format(_startDate!);
                     });
                   }
                 },
@@ -199,5 +244,6 @@ class _CareRequestPageState extends State<CareRequestPage> {
     );
 
     _careCommunityService.addCareRequest(careRequest);
+    Navigator.pop(context);
   }
 }
