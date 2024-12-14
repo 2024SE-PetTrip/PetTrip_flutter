@@ -7,6 +7,7 @@ import 'package:pettrip_fe/services/care_community_service.dart';
 import 'package:pettrip_fe/widgets/filter_button.dart';
 
 import 'package:pettrip_fe/screens/care_detail_page.dart';
+import 'package:pettrip_fe/screens/care_request_page.dart';
 
 class CareFindPage extends StatefulWidget {
   const CareFindPage({super.key});
@@ -132,12 +133,10 @@ class _CareFindPageState extends State<CareFindPage> {
                           backgroundColor: LIGHT_GRAY_COLOR,
                         ),
                         title: Text(item.title),
-                        subtitle: Text(item.breed),
                         trailing: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(item.status, style: TextStyle(color: MAIN_COLOR)),
-                            Text(item.location),
+                            Text(item.address),
                           ],
                         ),
                         onTap: () {
@@ -150,8 +149,27 @@ class _CareFindPageState extends State<CareFindPage> {
                     );
                   },
                 ),
-          )
+          ),
+
+
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CareRequestPage()
+              )
+          );
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        backgroundColor: MAIN_COLOR,
+        child: const Icon(
+          color: Colors.white,
+          Icons.add,
+          size: 30,
+        ),
       ),
     );
   }

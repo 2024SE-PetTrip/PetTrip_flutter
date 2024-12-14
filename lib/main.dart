@@ -10,6 +10,7 @@ import 'package:pettrip_fe/screens/course_detail_page.dart';
 import 'package:pettrip_fe/screens/course_list_page.dart';
 import 'package:pettrip_fe/screens/course_maker_page.dart';
 import 'package:pettrip_fe/screens/care_service_page.dart';
+import 'package:pettrip_fe/screens/my_page.dart';
 import 'package:pettrip_fe/screens/create_group_page.dart';
 import 'package:pettrip_fe/screens/group_detail_page.dart';
 import 'package:pettrip_fe/screens/group_list_page.dart';

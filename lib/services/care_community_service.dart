@@ -5,6 +5,8 @@ import 'package:pettrip_fe/models/care_model.dart';
 
 import 'api_client.dart';
 
+import 'package:pettrip_fe/const/secret_key.dart';
+
 class CareCommunityService{
   final Dio _dio = ApiClient(null).dio;
 
@@ -27,7 +29,15 @@ class CareCommunityService{
       throw Exception("Failed to load data");
     }
   }
-
+  Future<void> addCareRequest(CareRequestDTO careRequestDTO) async {
+    try {
+      final response = await _dio.post('url',
+          data: careRequestDTO);
+    } catch (e) {
+      print('Error: $e');
+      throw Exception("돌봄 요청 실패: $e");
+    }
+  }
 }
 
 
