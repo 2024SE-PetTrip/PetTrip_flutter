@@ -37,7 +37,7 @@ class CareCommunityService{
           data: careRequestDTO);
     } catch (e) {
       print('Error: $e');
-      throw Exception("댓글 서버 저장 실패: $e");
+      throw Exception("돌봄 요청 실패: $e");
     }
   }
 }
