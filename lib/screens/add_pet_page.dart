@@ -1,9 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import 'package:pettrip_fe/services/pet_service.dart';
 import 'package:pettrip_fe/models/pet_model.dart';
-
 import 'package:pettrip_fe/const/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPetPage extends StatefulWidget {
   final int userID;
@@ -18,6 +18,19 @@ class _AddPetPageState extends State<AddPetPage> {
   final _petService = PetService();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+
+  File? _selectedImage;
+  final _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
 
   String? petImageUrl;
 
@@ -39,20 +52,32 @@ class _AddPetPageState extends State<AddPetPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.camera_alt, size: 40, color: Colors.grey),
-                      SizedBox(height: 8),
-                      Text("대표 사진을 추가하세요")
-                    ],
+              GestureDetector(
+                onTap: _pickImage, // 사진 선택 동작
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: _selectedImage == null
+                      ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.camera_alt, size: 40, color: Colors.grey),
+                        SizedBox(height: 8),
+                        Text("대표 사진을 추가하세요"),
+                      ],
+                    ),
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      _selectedImage!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:pettrip_fe/models/care_model.dart';
 import 'package:pettrip_fe/services/care_community_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pettrip_fe/widgets/province_city_selector.dart';
 
 class CareRequestPage extends StatefulWidget {
   const CareRequestPage({super.key});
@@ -109,48 +110,14 @@ class _CareRequestPageState extends State<CareRequestPage> {
               // Address Inputs
               Row(
                 children: [
-                  // Province Dropdown
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: "도/특별시/광역시",
-                        border: OutlineInputBorder(),
-                      ),
-                      items: ["서울시", "부산시", "대구시"].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedProvince = value;
-                        });
+                  ProvinceCitySelector(
+                      onProvinceChanged: (province) {
+                        _selectedProvince = province;
                       },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-
-                  // District Dropdown
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: "시/군/구",
-                        border: OutlineInputBorder(),
-                      ),
-                      items: ["중구", "강남구", "서초구"].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDistrict = value;
-                        });
-                      },
-                    ),
-                  ),
+                      onCityChanged: (city) {
+                        _selectedDistrict = city;
+                      }
+                  )
                 ],
               ),
               const SizedBox(height: 16),
