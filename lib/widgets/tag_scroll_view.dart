@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-class Tags extends StatelessWidget {
+class TagScrollView extends StatelessWidget {
   final List<String> tags;
 
-  const Tags({super.key, required this.tags});
+  const TagScrollView({super.key, required this.tags});
 
 
 @override

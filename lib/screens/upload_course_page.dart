@@ -27,13 +27,13 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
   }
 
   Future<void> _loadCourses() async {
-    // try {
-    //   _courses = await _courseService.getUserCourses(testUserID); // 코스 목록 가져오기
-    //   setState(() {});
-    // } catch (e) {
-    //   print('코스 목록 로드 실패: $e');
-    // }
-    _courses = [dummyCourseData1, dummyCourseData2];
+    try {
+      // TODO: 실제 아이디로 변경
+      _courses = await _courseService.getUserCourses(testUserId);
+      setState(() {});
+    } catch (e) {
+      print('코스 목록 로드 실패: $e');
+    }
   }
 
   @override
@@ -74,13 +74,14 @@ class _UploadCoursePageState extends State<UploadCoursePage> {
           if (_selectedCourse != null)
             Expanded(child: SaveCourseForm(
               key: ValueKey(_selectedCourse),
+              initialCourseId: _selectedCourse!.courseId,
               initialCourseName: _selectedCourse!.courseName,
               initialMoveTime: _selectedCourse!.moveTime,
-              initialStatus: 'ACTIVE',
               initialProvince: _selectedCourse!.province,
               initialCity: _selectedCourse!.city,
-              initialDescription: _selectedCourse!.description,
+              initialDescription: _selectedCourse!.courseDescription,
               initialTag: _selectedCourse!.tags,
+              isUpload: true,
             ))
         ],
       ),

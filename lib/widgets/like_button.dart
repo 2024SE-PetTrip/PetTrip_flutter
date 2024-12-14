@@ -5,10 +5,10 @@ import '../const/colors.dart';
 import '../const/style.dart';
 
 class LikeButton extends StatefulWidget {
-  final String courseID;
+  final int courseId;
   final bool initialIsLiked;
   final int initialLikeCount;
-  const LikeButton({super.key, required this.initialIsLiked, required this.initialLikeCount, required this.courseID});
+  const LikeButton({super.key, required this.initialIsLiked, required this.initialLikeCount, required this.courseId});
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -37,11 +37,12 @@ class _LikeButtonState extends State<LikeButton> {
             ),
             onTap: () {
               setState(() {
-                _courseService.likeCourse(widget.courseID);
                 if (_isLiked) {
                   _likeCount--; // 좋아요 취소
+                  _courseService.disLikeCourse(widget.courseId);
                 } else {
                   _likeCount++; // 좋아요 추가
+                  _courseService.likeCourse(widget.courseId);
                 }
                 _isLiked = !_isLiked;
               });

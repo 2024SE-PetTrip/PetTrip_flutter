@@ -25,7 +25,7 @@ class _CourseDetailMapState extends State<CourseDetailMap> {
       height: 300,
       child: NaverMap(
         options: defaultNaverMapOptions.copyWith(
-          initialCameraPosition: NCameraPosition(target: widget.pathCoordinates.first, zoom: 12),
+          initialCameraPosition: NCameraPosition(target: widget.pathCoordinates.first, zoom: 16),
         ),
         onMapReady: (controller) async {
           final startMarker = NMarker(

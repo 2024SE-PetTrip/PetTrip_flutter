@@ -2,23 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/category.dart';
 import 'package:pettrip_fe/const/dummy_data.dart';
-import 'package:pettrip_fe/models/course_model.dart';
-import 'package:pettrip_fe/screens/upload_course_page.dart';
-import 'package:pettrip_fe/services/course_service.dart';
-import 'package:pettrip_fe/widgets/course_card.dart';
-import 'package:pettrip_fe/widgets/filter_modal.dart';
+import 'package:pettrip_fe/models/walk_group_model.dart';
+import 'package:pettrip_fe/screens/create_group_page.dart';
+import 'package:pettrip_fe/services/walk_group_service.dart';
 
 import '../const/colors.dart';
+import '../widgets/filter_modal.dart';
+import '../widgets/group_card.dart';
 
-class CourseListPage extends StatefulWidget {
-  const CourseListPage({super.key});
+class GroupListPage extends StatefulWidget {
+  const GroupListPage({super.key});
 
   @override
-  State<CourseListPage> createState() => _CourseListPageState();
+  State<GroupListPage> createState() => _GroupListPageState();
 }
 
-class _CourseListPageState extends State<CourseListPage> {
-  final CourseService _courseService = CourseService();
+class _GroupListPageState extends State<GroupListPage> {
+  final WalkGroupService _groupService = WalkGroupService();
 
   // 검색 및 필터링 관련 상태 변수
   String? _searchTitle; // 검색어
@@ -27,48 +27,46 @@ class _CourseListPageState extends State<CourseListPage> {
   List<String> _selectedTags = []; // 선택된 태그
   bool _isFilterApplied = false; // 핕터 적용 여부
 
-  late List<CourseModel> _allCourses; // 모든 코스
-  late List<CourseModel> _filteredCourses; // 필터링 된 코스
+  late List<WalkGroupModel> _allGroups; // 모든 코스
+  late List<WalkGroupModel> _filteredGroups; // 필터링 된 코스
 
   bool _isLoading = true; // 로딩 상태
 
   @override
   void initState() {
     super.initState();
-    _loadCourses();
+    _loadGroups();
   }
 
-  Future<void> _loadCourses() async {
+  Future<void> _loadGroups() async {
     setState(() {
       _isLoading = true; // 로딩 시작
     });
-    _allCourses = await _courseService.getAllCourses();
+    _allGroups = await _groupService.getAllGroups();
     setState(() {
-      _filteredCourses = _allCourses;
+      _filteredGroups = _allGroups;
       _isLoading = false;
     });
   }
 
   // 코스 필터링 메서드
-  void _filterCourses() {
+  void _filterGroups() {
     setState(() {
-      _filteredCourses = _allCourses.where((course) {
+      _filteredGroups = _allGroups.where((group) {
         final matchesTitle = _searchTitle == null ||
-            course.courseName
-                .toLowerCase()
-                .contains(_searchTitle!.toLowerCase());
+            group.groupName.toLowerCase().contains(_searchTitle!.toLowerCase());
         final matchesLocation = (_selectedProvince == null ||
-                course.province == _selectedProvince) &&
-            (_selectedCity == null || course.city == _selectedCity);
+                group.province == _selectedProvince) &&
+            (_selectedCity == null || group.city == _selectedCity);
         final matchesTags = _selectedTags.isEmpty ||
-            _selectedTags.every((tag) => course.tags.contains(tag));
+            _selectedTags.every((tag) => group.tags.contains(tag));
 
         return matchesTitle && matchesLocation && matchesTags;
       }).toList();
     });
   }
 
-// 필터 모달 호출
+  // 필터 모달 호출
   void _showFilterModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -80,7 +78,7 @@ class _CourseListPageState extends State<CourseListPage> {
           selectedProvince: _selectedProvince,
           selectedCity: _selectedCity,
           selectedTags: _selectedTags,
-          tagList: courseTags,
+          tagList: groupTags,
           onProvinceChanged: (province) {
             setState(() {
               _selectedProvince = province;
@@ -100,7 +98,7 @@ class _CourseListPageState extends State<CourseListPage> {
             setState(() {
               _isFilterApplied = true;
             });
-            _filterCourses();
+            _filterGroups();
           },
         );
       },
@@ -111,7 +109,7 @@ class _CourseListPageState extends State<CourseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white, title: Text('코스 찾기')),
+      appBar: AppBar(backgroundColor: Colors.white, title: Text('모임 찾기')),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
@@ -126,7 +124,7 @@ class _CourseListPageState extends State<CourseListPage> {
                         // 검색창
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText: '코스 이름 검색',
+                            hintText: '모임 이름 검색',
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(color: MAIN_COLOR),
@@ -138,7 +136,7 @@ class _CourseListPageState extends State<CourseListPage> {
                           ),
                           onChanged: (value) {
                             _searchTitle = value;
-                            _filterCourses();
+                            _filterGroups();
                           },
                         ),
                       ),
@@ -154,7 +152,7 @@ class _CourseListPageState extends State<CourseListPage> {
                                 _selectedCity = null;
                                 _selectedTags = [];
                                 _isFilterApplied = false;
-                                _filterCourses(); // 필터 초기화 후 다시 필터링
+                                _filterGroups(); // 필터 초기화 후 다시 필터링
                               });
                             } else {
                               // 필터 모달을 열기
@@ -192,13 +190,10 @@ class _CourseListPageState extends State<CourseListPage> {
                 // 필터링 된 코스 목록
                 Expanded(
                   child: ListView.builder(
-                    itemCount: _filteredCourses.length,
+                    itemCount: _filteredGroups.length,
                     itemBuilder: (context, index) {
-                      final course = _filteredCourses[index];
-                      return CourseCard(
-                        course: course,
-                        isLiked: false,
-                      );
+                      final group = _filteredGroups[index];
+                      return GroupCard(walkGroup: group);
                     },
                   ),
                 ),
@@ -207,7 +202,7 @@ class _CourseListPageState extends State<CourseListPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => UploadCoursePage()));
+              MaterialPageRoute(builder: (context) => CreateGroupPage()));
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         backgroundColor: MAIN_COLOR,
