@@ -6,7 +6,9 @@ import 'package:pettrip_fe/models/pet_model.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
 class AddPetPage extends StatefulWidget {
-  const AddPetPage({super.key});
+  final int userID;
+
+  const AddPetPage({super.key, required this.userID});
 
   @override
   State<AddPetPage> createState() => _AddPetPageState();
@@ -98,7 +100,7 @@ class _AddPetPageState extends State<AddPetPage> {
   }
   void _submitAddPet() {
     final petModel = PetModel(
-        userId: 1,
+        userId: widget.userID,
         petName: _nameController.text,
         petAge: int.parse(_ageController.text),
         breed: "",

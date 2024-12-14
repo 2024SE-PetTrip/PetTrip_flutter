@@ -78,7 +78,7 @@ class _MyPageState extends State<MyPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => AddPetPage())
+                    builder: (context) => AddPetPage(userID: 1))
                 );
               },
               child: Text("반려동물 추가"),
