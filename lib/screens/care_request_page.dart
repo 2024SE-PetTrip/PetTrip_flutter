@@ -172,20 +172,20 @@ class _CareRequestPageState extends State<CareRequestPage> {
                     firstDate: DateTime(2023),
                     lastDate: DateTime(2025),
                   );
-                  if (selectedDate != null) {
-                    TimeOfDay? selectedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now()
-                    );
-                  }
-                  if (selectedDate != null) {
+
+                  TimeOfDay? selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now()
+                  );
+
+                  if (selectedDate != null && selectedTime != null) {
                     setState(() {
                       _startDate = DateTime(
                         selectedDate.year,
                         selectedDate.month,
                         selectedDate.day,
-                        selectedDate.hour,
-                        selectedDate.minute,
+                        selectedTime.hour,
+                        selectedTime.minute,
                       );
                       _dateController.text = _dateFormat.format(_startDate!);
                     });
