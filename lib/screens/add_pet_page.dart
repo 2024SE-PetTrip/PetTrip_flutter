@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:pettrip_fe/services/pet_service.dart';
 import 'package:pettrip_fe/models/pet_model.dart';
-
+import 'package:pettrip_fe/widgets/species_selector.dart';
 import 'package:pettrip_fe/const/colors.dart';
+
+import '../const/style.dart';
 
 class AddPetPage extends StatefulWidget {
   final int userID;
@@ -20,6 +22,9 @@ class _AddPetPageState extends State<AddPetPage> {
   final TextEditingController _ageController = TextEditingController();
 
   String? petImageUrl;
+
+  String? _selectedCatOrDog;
+  String? _selectedSpecies;
 
   @override
   Widget build(BuildContext context) {
@@ -59,33 +64,53 @@ class _AddPetPageState extends State<AddPetPage> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  TextField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: "이름",
-                      hintText: "나비",
+                  Expanded(
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                          hintText: "이름",
+                          filled: true,
+                          fillColor: LIGHT_GRAY_COLOR,
+                          enabledBorder: defaultInputBorder,
+                          focusedBorder: defaultInputBorder),
                     ),
                   ),
-                  TextField(
-                    controller: _ageController,
-                    decoration: const InputDecoration(
-                      labelText: "나이",
-                      hintText: "3",
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: _ageController,
+                      decoration: InputDecoration(
+                          hintText: "나이",
+                          filled: true,
+                          fillColor: LIGHT_GRAY_COLOR,
+                          enabledBorder: defaultInputBorder,
+                          focusedBorder: defaultInputBorder),
                     ),
                   )
                 ],
               ),
+              SizedBox(height: 20),
+              SpeciesSelector(
+                  selectedCatOrDog: _selectedCatOrDog,
+                  selectedSpecies: _selectedSpecies,
+                  onCatOrDogChanged: (catOrDog) {
+                    setState(() {
+                      _selectedCatOrDog = catOrDog;
+                      _selectedSpecies = null;
+                    });
+                  },
+                  onSpeciesChanged: (species) {
+                    setState(() {
+                      _selectedSpecies = species;
+                    });
+                  }
+              ),
+              SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: _submitAddPet,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: MAIN_COLOR,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    )
-                  ),
+                  style: defaultTextButtonStyle,
                   child: const Text(
                     "반려동물 추가",
                     style: TextStyle(fontSize: 16, color: Colors.white),
@@ -103,15 +128,10 @@ class _AddPetPageState extends State<AddPetPage> {
         userId: widget.userID,
         petName: _nameController.text,
         petAge: int.parse(_ageController.text),
-        breed: "",
+        breed: _selectedSpecies!,
         petImageUrl: petImageUrl ?? '');
 
     _petService.addPet(petModel);
     Navigator.pop(context);
   }
 }
-
-
-
-
-

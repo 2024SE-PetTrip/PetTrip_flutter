@@ -42,7 +42,6 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       _isLoading = true;
     });
     _comments = await _commentService.getCourseComments(widget.course.courseId);
-    debugPrint("댓글실행");
     setState(() {
       _isLoading = false;
     });

@@ -21,7 +21,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
     });
 
     try {
-      final chatRooms = await chatRoomService.fetchChatRooms();
+      // 임시 아이디
+      final chatRooms = await chatRoomService.fetchChatRooms(16);
       setState(() {
         _chatRooms = chatRooms;
       });
@@ -50,8 +51,22 @@ class _ChatHomePageState extends State<ChatHomePage> {
             : ListView.builder(
                 itemCount: _chatRooms.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Room ID : ${_chatRooms[index].chatRoomId}'),
+                  return GestureDetector(
+                    child: Row(
+                      children: const [
+                        SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: ClipOval(
+                            child: Icon(
+                              Icons.person,
+                              size: 60,
+                            ),
+                          ),
+                        ),
+                        Text("시루",)
+                      ],
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,

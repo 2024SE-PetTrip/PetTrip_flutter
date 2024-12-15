@@ -9,6 +9,8 @@ import 'package:pettrip_fe/widgets/filter_button.dart';
 import 'package:pettrip_fe/screens/care_detail_page.dart';
 import 'package:pettrip_fe/screens/care_request_page.dart';
 
+import '../const/style.dart';
+
 class CareFindPage extends StatefulWidget {
   const CareFindPage({super.key});
 
@@ -44,8 +46,7 @@ class _CareFindPageState extends State<CareFindPage> {
       });
     } catch (e) { //예외 처리
       if(!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load items: $e')));
+      debugPrint('Failed to load items: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -117,39 +118,52 @@ class _CareFindPageState extends State<CareFindPage> {
             ),
           ),
           SizedBox(width: 8),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : ListView.builder(
+          if (_isLoading) Center(child: CircularProgressIndicator()) else Expanded(
+              child: ListView.builder(
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
                     final item = _items[index];
-                    return Card(
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: LIGHT_GRAY_COLOR,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CareDetailPage(item: item)),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: LIGHT_GRAY_COLOR),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        title: Text(item.title),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(item.address),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    item.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: titleTextStyle,
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  item.address,
+                                  style: smallTextStyle,
+                                )
+                              ],
+                            ),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CareDetailPage(item: item)),
-                          );
-                        },
                       ),
                     );
                   },
                 ),
-          ),
+            ),
 
 
         ],

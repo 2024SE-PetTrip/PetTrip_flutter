@@ -5,6 +5,8 @@ import 'package:pettrip_fe/screens/group_list_page.dart';
 import 'package:pettrip_fe/screens/care_service_page.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
+import 'my_page.dart';
+
 class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
@@ -22,7 +24,7 @@ class _MainPageState extends State<MainPage> {
       CourseListPage(),
       GroupListPage(),
       CareServicePage(),
-      Placeholder(),
+      MyPage()
     ];
   }
 

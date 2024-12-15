@@ -3,9 +3,11 @@ import 'package:pettrip_fe/models/user_model.dart';
 
 import 'package:pettrip_fe/const/secret_key.dart';
 
+import 'api_client.dart';
+
 class UserService {
   // 서버 URL
-  final Dio _dio = Dio(BaseOptions(baseUrl: backendUrl));
+  final Dio _dio = ApiClient(null).dio;
 
   Future<UserModel> getProfile(String userID) async {
     try {

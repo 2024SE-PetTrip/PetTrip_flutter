@@ -51,6 +51,14 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 60),
+              Center(
+                child: Image.asset(
+                  'assets/images/pettrip_logo.png',
+                  width: 200
+                ),
+              ),
+              SizedBox(height: 20),
               Text("이메일"),
               TextFormField(
                 controller: _usernameController,

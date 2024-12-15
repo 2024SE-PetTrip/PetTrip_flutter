@@ -1,38 +1,59 @@
 class CareModel {
   final int requestId;
+  final int? requesterId;
+  final int? providerId;
   final String title;
-  final int petId;
   final String address;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String requestDescription;
   final String requestImageUrl;
+  final int petId;
+  final String status; // CareRequestStatus as String
 
-  // Constructor
   CareModel({
     required this.requestId,
+    this.requesterId,
+    this.providerId,
     required this.title,
-    required this.petId,
     required this.address,
+    required this.startDate,
+    required this.endDate,
+    required this.requestDescription,
     required this.requestImageUrl,
+    required this.petId,
+    required this.status,
   });
 
-  // Factory constructor to create an instance from JSON
   factory CareModel.fromJson(Map<String, dynamic> json) {
     return CareModel(
-      requestId: json['requestId'],
-      title: json['title'],
-      petId: json['petId'],
-      address: json['address'],
-      requestImageUrl: json['requestImageUrl'],
+      requestId: json['requestId'] as int,
+      requesterId: json['requesterId'] as int?,
+      providerId: json['providerId'] as int?,
+      title: json['title'] as String,
+      address: json['address'] as String,
+      startDate: DateTime.parse(json['startDate'] as String),
+      endDate: DateTime.parse(json['endDate'] as String),
+      requestDescription: json['requestDescription'] as String,
+      requestImageUrl: json['requestImageUrl'] as String? ?? '',
+      petId: json['petId'] as int,
+      status: json['status'] as String,
     );
   }
 
-  // Method to convert an instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'requestId': requestId,
+      'requesterId': requesterId,
+      'providerId': providerId,
       'title': title,
-      'petId': petId,
       'address': address,
+      'startDate': startDate.toIso8601String(),
+      'endDate': endDate.toIso8601String(),
+      'requestDescription': requestDescription,
       'requestImageUrl': requestImageUrl,
+      'petId': petId,
+      'status': status,
     };
   }
 }

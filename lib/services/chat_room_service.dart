@@ -9,9 +9,9 @@ import 'api_client.dart';
 class ChatRoomService {
   final Dio _dio = ApiClient(null).dio;
 
-  Future<List<ChatRoomModel>> fetchChatRooms() async {
+  Future<List<ChatRoomModel>> fetchChatRooms(int userId) async {
     try {
-      final response = await _dio.get('');
+      final response = await _dio.get('/care/chatRoom/$userId/myChatRooms');
       if(response.statusCode == 200){
         final List data = response.data;
 
@@ -23,11 +23,20 @@ class ChatRoomService {
       print('Error: $e');
       throw Exception('$e');
     }
-
-
-
-
-
-
   }
+
+  Future<void> createChatRoom(int roomMakerId, int guestId) async {
+    try {
+      final response =
+      await _dio.post('/care/chatRoom/personal', data: {
+        "roomMakerId": roomMakerId,
+        "guestId": guestId
+      });
+    } catch (e) {
+      print('Error: $e');
+      throw Exception("채팅방 개설 실패: $e");
+    }
+  }
+
+
 }

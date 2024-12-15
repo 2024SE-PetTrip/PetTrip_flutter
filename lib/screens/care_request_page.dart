@@ -1,6 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/models/care_model.dart';
 import 'package:pettrip_fe/services/care_community_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:pettrip_fe/widgets/province_city_selector.dart';
+
+import '../const/colors.dart';
+import '../const/style.dart';
 
 class CareRequestPage extends StatefulWidget {
   const CareRequestPage({super.key});
@@ -12,15 +19,31 @@ class CareRequestPage extends StatefulWidget {
 class _CareRequestPageState extends State<CareRequestPage> {
   final CareCommunityService _careCommunityService = CareCommunityService();
 
+  File? _selectedImage;
+  final _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   // Controllers for text fields
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final DateFormat _dateFormat = DateFormat('yyyy-MM-dd / HH:mm ');
 
   // State for dropdowns and image URL
   String? _selectedProvince;
-  String? _selectedDistrict;
+  String? _selectedCity;
   String? _requestImageUrl; // Placeholder for image upload logic
   DateTime? _startDate;
+
   // Mock data (Replace with real IDs from your app's logic)
   final int requesterId = 1; // Example user ID
   final int petId = 101; // Example pet ID
@@ -28,6 +51,7 @@ class _CareRequestPageState extends State<CareRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("돌봄 요청 등록"),
         centerTitle: true,
@@ -44,21 +68,33 @@ class _CareRequestPageState extends State<CareRequestPage> {
             children: [
               const SizedBox(height: 16),
               // Image Placeholder
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.camera_alt, size: 40, color: Colors.grey),
-                      SizedBox(height: 8),
-                      Text("대표 사진을 추가하세요"),
-                    ],
+              GestureDetector(
+                onTap: _pickImage, // 사진 선택 동작
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: _selectedImage == null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.camera_alt,
+                                  size: 40, color: Colors.grey),
+                              SizedBox(height: 8),
+                              Text("대표 사진을 추가하세요"),
+                            ],
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            _selectedImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -66,72 +102,41 @@ class _CareRequestPageState extends State<CareRequestPage> {
               // Title Input
               TextField(
                 controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: "제목",
-                  hintText: "돌봄 1",
-                  border: OutlineInputBorder(),
-                ),
+                decoration: InputDecoration(
+                    hintText: "제목",
+                    filled: true,
+                    fillColor: LIGHT_GRAY_COLOR,
+                    enabledBorder: defaultInputBorder,
+                    focusedBorder: defaultInputBorder),
               ),
               const SizedBox(height: 16),
 
-              // Address Inputs
-              Row(
-                children: [
-                  // Province Dropdown
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: "도/특별시/광역시",
-                        border: OutlineInputBorder(),
-                      ),
-                      items: ["서울시", "부산시", "대구시"].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedProvince = value;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-
-                  // District Dropdown
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: "시/군/구",
-                        border: OutlineInputBorder(),
-                      ),
-                      items: ["중구", "강남구", "서초구"].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDistrict = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              ProvinceCitySelector(
+                  selectedCity: _selectedProvince,
+                  selectedProvince: _selectedCity,
+                  onProvinceChanged: (province) {
+                    setState(() {
+                      _selectedProvince = province;
+                      _selectedCity = null;
+                    });
+                  },
+                  onCityChanged: (city) {
+                    setState(() {
+                      _selectedCity = city;
+                    });
+                  }),
               const SizedBox(height: 16),
 
               // Date Input
               TextField(
+                controller: _dateController,
                 readOnly: true,
-                decoration: const InputDecoration(
-                  labelText: "돌봄 희망일",
-                  hintText: "2024-11-15 / 12:30",
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
+                decoration: InputDecoration(
+                    hintText: "돌봄 희망일",
+                    filled: true,
+                    fillColor: LIGHT_GRAY_COLOR,
+                    enabledBorder: defaultInputBorder,
+                    focusedBorder: defaultInputBorder),
                 onTap: () async {
                   // Date Picker Logic
                   DateTime? selectedDate = await showDatePicker(
@@ -140,24 +145,39 @@ class _CareRequestPageState extends State<CareRequestPage> {
                     firstDate: DateTime(2023),
                     lastDate: DateTime(2025),
                   );
-                  if (selectedDate != null) {
+
+                  TimeOfDay? selectedTime = await showTimePicker(
+                      context: context, initialTime: TimeOfDay.now());
+
+                  if (selectedDate != null && selectedTime != null) {
                     setState(() {
-                      _startDate = selectedDate;
+                      _startDate = DateTime(
+                        selectedDate.year,
+                        selectedDate.month,
+                        selectedDate.day,
+                        selectedTime.hour,
+                        selectedTime.minute,
+                      );
+                      _dateController.text = _dateFormat.format(_startDate!);
                     });
                   }
                 },
               ),
               const SizedBox(height: 16),
 
-              // Description Input
+              Text('설명글'),
+              SizedBox(height: 10),
               TextField(
                 controller: _descriptionController,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: "설명글 작성",
-                  hintText: "돌봄 설명글 부분입니다",
-                  border: OutlineInputBorder(),
-                ),
+                maxLength: 500,
+                maxLines: null,
+                minLines: 3,
+                decoration: InputDecoration(
+                    hintText: "돌봄 요청 설명을 작성해 주세요.",
+                    filled: true,
+                    fillColor: LIGHT_GRAY_COLOR,
+                    enabledBorder: defaultInputBorder,
+                    focusedBorder: defaultInputBorder),
               ),
               const SizedBox(height: 32),
 
@@ -190,7 +210,7 @@ class _CareRequestPageState extends State<CareRequestPage> {
     final careRequest = CareRequestDTO(
       requesterId: requesterId,
       title: _titleController.text,
-      address: "${_selectedProvince ?? ''} ${_selectedDistrict ?? ''}",
+      address: "${_selectedProvince ?? ''} ${_selectedCity ?? ''}",
       startDate: _startDate!,
       endDate: _startDate!.add(Duration(days: 7)),
       requestDescription: _descriptionController.text,
@@ -199,5 +219,6 @@ class _CareRequestPageState extends State<CareRequestPage> {
     );
 
     _careCommunityService.addCareRequest(careRequest);
+    Navigator.pop(context);
   }
 }
