@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-import '../const/dummy_data.dart';
 import '../const/style.dart';
 import '../models/course_model.dart';
 import '../services/course_service.dart';

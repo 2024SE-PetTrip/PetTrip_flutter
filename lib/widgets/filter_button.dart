@@ -17,7 +17,6 @@ class FilterButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       ),
       onPressed: (){
-        //TODO: 필터링 창 구현
       },
       child: const Row(
         mainAxisSize: MainAxisSize.min,

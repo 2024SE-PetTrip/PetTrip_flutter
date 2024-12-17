@@ -3,22 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/secret_key.dart';
-import 'package:pettrip_fe/const/colors.dart';
-import 'package:pettrip_fe/screens/course_detail_page.dart';
-import 'package:pettrip_fe/screens/course_list_page.dart';
-import 'package:pettrip_fe/screens/course_maker_page.dart';
-import 'package:pettrip_fe/screens/care_service_page.dart';
-import 'package:pettrip_fe/screens/my_page.dart';
-import 'package:pettrip_fe/screens/create_group_page.dart';
-import 'package:pettrip_fe/screens/group_detail_page.dart';
-import 'package:pettrip_fe/screens/group_list_page.dart';
-import 'package:pettrip_fe/screens/join_page.dart';
 import 'package:pettrip_fe/screens/login_page.dart';
 import 'package:pettrip_fe/screens/main_page.dart';
-import 'package:pettrip_fe/services/api_client.dart';
-import 'package:pettrip_fe/services/login_service.dart';
 
 void main() async {
   await _initialize();

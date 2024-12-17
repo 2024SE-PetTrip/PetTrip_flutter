@@ -6,7 +6,6 @@ import 'package:pettrip_fe/screens/group_detail_page.dart';
 import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 
 import '../const/colors.dart';
-import '../const/dummy_data.dart';
 import '../services/walk_group_service.dart';
 
 class GroupCard extends StatefulWidget {

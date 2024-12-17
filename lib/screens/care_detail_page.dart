@@ -8,6 +8,8 @@ import 'package:pettrip_fe/services/chat_room_service.dart';
 
 import 'package:pettrip_fe/widgets/info_box.dart';
 
+import '../services/token_storage.dart';
+
 class CareDetailPage extends StatefulWidget {
   final CareModel item;
 
@@ -21,6 +23,26 @@ class _CareDetailPageState extends State<CareDetailPage> {
   final ChatRoomService _chatRoomService = ChatRoomService();
 
   late bool _isApplicant = false;
+  bool _isLoading = false;
+  int? _userId;
+
+  Future<void> _initializeUserId() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final userId = await getUserId();
+    debugPrint("유저아이디: $userId");
+    setState(() {
+      _userId = userId;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,57 +55,62 @@ class _CareDetailPageState extends State<CareDetailPage> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 제목
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                widget.item.title,
-                style: titleTextStyle
-              ),
-            ),
-            defaultDivider,
-            Padding(
-              padding: EdgeInsets.all(10),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InfoBox(title: '지역', content: widget.item.address),
-                  SizedBox(height: 10),
-                  InfoBox(title: '돌봄 희망일', content: DateFormat('yyyy-MM-dd / HH:mm').format(widget.item.startDate)),
-                  SizedBox(height: 20),
-                  Text('설명글'),
-                  SizedBox(
-                    height: 10,
+                  // 제목
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(widget.item.title, style: titleTextStyle),
                   ),
-                  Text(widget.item.requestDescription),
+                  defaultDivider,
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InfoBox(title: '지역', content: widget.item.address),
+                        SizedBox(height: 10),
+                        InfoBox(
+                            title: '돌봄 희망일',
+                            content: DateFormat('yyyy-MM-dd / HH:mm')
+                                .format(widget.item.startDate)),
+                        SizedBox(height: 20),
+                        Text('설명글'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(widget.item.requestDescription),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  defaultDivider,
+
+                  SizedBox(height: 10),
+                  _isApplicant
+                      ? SizedBox()
+                      : Center(
+                          child: TextButton(
+                            onPressed: () {
+                              _chatRoomService.createChatRoom(
+                                  widget.item.requesterId!, _userId!);
+                              setState(() {
+                                _isApplicant = true;
+                              });
+                            },
+                            style: defaultTextButtonStyle,
+                            child: Text("돌봄 지원하기"),
+                          ),
+                        )
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            defaultDivider,
-
-            SizedBox(height: 10),
-            _isApplicant?
-            SizedBox():
-            Center(
-              child: TextButton(
-                onPressed: (){
-                  _chatRoomService.createChatRoom(16, 17);
-                  setState(() {
-                    _isApplicant = true;
-                  });
-                },
-                style: defaultTextButtonStyle,
-                child: Text("돌봄 지원하기"),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

@@ -33,7 +33,6 @@ class LocationService {
     return await Geolocator.getCurrentPosition();
   }
 
-  // TODO: 좌표 저장 간격 조절
   // 10초마다 현재 위치를 받아서 경로를 추가하는 함수
   void startLocationTracking() {
     _locationTimer = Timer.periodic(Duration(seconds: 10), (timer) async {

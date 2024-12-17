@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/category.dart';
-import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/models/walk_group_model.dart';
 import 'package:pettrip_fe/screens/create_group_page.dart';
 import 'package:pettrip_fe/services/walk_group_service.dart';

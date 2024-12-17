@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/colors.dart';
-import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/services/course_service.dart';
 import 'package:pettrip_fe/services/token_parser.dart';

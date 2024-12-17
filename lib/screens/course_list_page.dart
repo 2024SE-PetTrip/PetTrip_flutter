@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/category.dart';
-import 'package:pettrip_fe/const/dummy_data.dart';
 import 'package:pettrip_fe/models/course_model.dart';
 import 'package:pettrip_fe/screens/upload_course_page.dart';
 import 'package:pettrip_fe/services/course_service.dart';

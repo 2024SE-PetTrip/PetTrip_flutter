@@ -10,7 +10,7 @@ import 'package:pettrip_fe/widgets/tag_selector.dart';
 
 import '../const/category.dart';
 import '../const/colors.dart';
-import '../const/dummy_data.dart';
+import '../services/token_storage.dart';
 
 class SaveCourseForm extends StatefulWidget {
   final int? initialCourseId;
@@ -56,9 +56,13 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
   late String _status;
   List<String>? _selectedTag;
 
+  int? _userId;
+
   @override
   void initState() {
     super.initState();
+
+    _initializeUserId();
 
     // 전달된 값이 있으면 필드에 설정
     _courseNameController.text = widget.initialCourseName ?? '';
@@ -67,6 +71,14 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
     _selectedCity = widget.initialCity;
     _status = widget.initialStatus ?? 'ACTIVE';
     _selectedTag = widget.initialTag;
+  }
+
+  Future<void> _initializeUserId() async {
+    final userId = await getUserId();
+    debugPrint("유저아이디: $userId");
+    setState(() {
+      _userId = userId;
+    });
   }
 
   Future<void> _submitForm() async {
@@ -85,7 +97,7 @@ class _SaveCourseFormState extends State<SaveCourseForm> {
 
       // 수집된 데이터
       final courseData = {
-        "userId": testUserId, // TODO: 실제 userID로 변경 필요
+        "userId": _userId,
         "courseName": _courseNameController.text,
         "moveTime": widget.initialMoveTime,
         "status": _status,

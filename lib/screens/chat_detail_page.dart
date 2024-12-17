@@ -8,11 +8,15 @@ import 'package:stomp_dart_client/stomp_dart_client.dart';
 
 import '../const/colors.dart';
 import '../const/secret_key.dart';
+import '../models/user_model.dart';
 import '../services/token_storage.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final ChatRoomModel room;
-  const ChatDetailPage({super.key, required this.room});
+  const ChatDetailPage({super.key, required this.room, required this.meId, required this.other});
+
+  final int meId;
+  final UserModel other;
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -116,7 +120,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
     final message = ChatMessageModel(
       roomId: widget.room.chatRoomId,
-      authorId: widget.room.roomMakerId,
+      authorId: widget.meId,
       message: messageText,
     );
 
@@ -125,11 +129,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       destination: '/pub/message',
       body: json.encode(message.toJson()),
     );
-
-    // // 로컬 메시지 리스트에 추가
-    // setState(() {
-    //   _messages.add(message);
-    // });
 
     _messageController.clear();
   }
@@ -141,7 +140,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('시루'),
+        title: Text(widget.other.nickname),
       ),
       body: Column(
         children: [

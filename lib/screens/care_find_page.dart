@@ -19,7 +19,6 @@ class CareFindPage extends StatefulWidget {
 }
 
 class _CareFindPageState extends State<CareFindPage> {
-  //TODO: 필터링 관련 변수
   String? _searchTitle;
   String? _searchLocation;
   String? _breed;
@@ -36,7 +35,6 @@ class _CareFindPageState extends State<CareFindPage> {
 
     try {
       final items = await careCommunityService.fetchItems(
-        //TODO:필터링 관련 넘겨줄 파라미터
         title: _searchTitle,
         location: _searchLocation,
         breed: _breed,
