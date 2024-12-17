@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pettrip_fe/models/chat_room_model.dart';
 import 'package:pettrip_fe/models/user_model.dart';
 import 'package:pettrip_fe/services/chat_room_service.dart';
-import 'package:pettrip_fe/screens/chat_detail_page.dart';
+import 'package:pettrip_fe/screens/chat/chat_detail_page.dart';
 
-import '../services/token_storage.dart';
-import '../services/user_service.dart';
+import '../../services/token_storage.dart';
+import '../../services/user_service.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({super.key});

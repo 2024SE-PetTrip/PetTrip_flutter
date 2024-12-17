@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pettrip_fe/screens/save_course_page.dart';
+import 'package:pettrip_fe/screens/course/save_course_page.dart';
 
-import '../const/style.dart';
-import '../services/location_service.dart';
-import '../widgets/course_maker_map.dart';
+import '../../const/style.dart';
+import '../../services/location_service.dart';
+import '../../widgets/course_maker_map.dart';
 
 class CourseMakerPage extends StatefulWidget {
   const CourseMakerPage({super.key});

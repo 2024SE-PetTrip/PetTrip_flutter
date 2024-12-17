@@ -8,13 +8,13 @@ import 'package:pettrip_fe/widgets/add_comment.dart';
 import 'package:pettrip_fe/widgets/course_detail_map.dart';
 import 'package:pettrip_fe/widgets/like_button.dart';
 
-import '../models/comment_model.dart';
-import '../models/course_model.dart';
-import '../services/comment_service.dart';
-import '../services/token_storage.dart';
-import '../widgets/comment_card.dart';
-import '../widgets/info_box.dart';
-import '../widgets/tag_scroll_view.dart';
+import '../../models/comment_model.dart';
+import '../../models/course_model.dart';
+import '../../services/comment_service.dart';
+import '../../services/token_storage.dart';
+import '../../widgets/comment_card.dart';
+import '../../widgets/info_box.dart';
+import '../../widgets/tag_scroll_view.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final CourseModel course;

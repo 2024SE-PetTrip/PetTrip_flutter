@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/models/walk_group_model.dart';
-import 'package:pettrip_fe/screens/group_detail_page.dart';
+import 'package:pettrip_fe/screens/group/group_detail_page.dart';
 import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 
 import '../const/colors.dart';

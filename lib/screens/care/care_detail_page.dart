@@ -8,7 +8,7 @@ import 'package:pettrip_fe/services/chat_room_service.dart';
 
 import 'package:pettrip_fe/widgets/info_box.dart';
 
-import '../services/token_storage.dart';
+import '../../services/token_storage.dart';
 
 class CareDetailPage extends StatefulWidget {
   final CareModel item;

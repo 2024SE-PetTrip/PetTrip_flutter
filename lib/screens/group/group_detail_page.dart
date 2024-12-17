@@ -6,11 +6,11 @@ import 'package:pettrip_fe/models/walk_group_model.dart';
 import 'package:pettrip_fe/services/walk_group_service.dart';
 import 'package:pettrip_fe/widgets/group_member_card.dart';
 
-import '../services/token_parser.dart';
-import '../services/token_storage.dart';
-import '../widgets/group_applicant_card.dart';
-import '../widgets/info_box.dart';
-import '../widgets/tag_scroll_view.dart';
+import '../../services/token_parser.dart';
+import '../../services/token_storage.dart';
+import '../../widgets/group_applicant_card.dart';
+import '../../widgets/info_box.dart';
+import '../../widgets/tag_scroll_view.dart';
 
 class GroupDetailPage extends StatefulWidget {
   final WalkGroupModel walkGroup;

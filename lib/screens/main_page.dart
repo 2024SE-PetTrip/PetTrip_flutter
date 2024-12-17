@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pettrip_fe/screens/course_maker_page.dart';
-import 'package:pettrip_fe/screens/course_list_page.dart';
-import 'package:pettrip_fe/screens/group_list_page.dart';
-import 'package:pettrip_fe/screens/care_service_page.dart';
+import 'package:pettrip_fe/screens/course/course_maker_page.dart';
+import 'package:pettrip_fe/screens/course/course_list_page.dart';
+import 'package:pettrip_fe/screens/group/group_list_page.dart';
+import 'package:pettrip_fe/screens/care/care_service_page.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-import 'my_page.dart';
+import 'user/my_page.dart';
 
 class MainPage extends StatefulWidget {
   @override

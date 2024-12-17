@@ -5,7 +5,7 @@ import 'package:pettrip_fe/models/pet_model.dart';
 import 'package:pettrip_fe/widgets/species_selector.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-import '../const/style.dart';
+import '../../const/style.dart';
 
 class AddPetPage extends StatefulWidget {
   final int userID;

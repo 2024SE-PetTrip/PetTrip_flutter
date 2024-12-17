@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../const/style.dart';
-import '../services/login_service.dart';
+import '../../const/style.dart';
+import '../../services/login_service.dart';
 import 'join_page.dart';
 
 class LoginPage extends StatefulWidget {

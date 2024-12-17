@@ -6,10 +6,10 @@ import 'package:pettrip_fe/models/care_model.dart';
 import 'package:pettrip_fe/services/care_community_service.dart';
 import 'package:pettrip_fe/widgets/filter_button.dart';
 
-import 'package:pettrip_fe/screens/care_detail_page.dart';
-import 'package:pettrip_fe/screens/care_request_page.dart';
+import 'package:pettrip_fe/screens/care/care_detail_page.dart';
+import 'package:pettrip_fe/screens/care/care_request_page.dart';
 
-import '../const/style.dart';
+import '../../const/style.dart';
 
 class CareFindPage extends StatefulWidget {
   const CareFindPage({super.key});

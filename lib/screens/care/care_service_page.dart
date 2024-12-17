@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pettrip_fe/screens/care_find_page.dart';
-import 'package:pettrip_fe/screens/chat_home_page.dart';
+import 'package:pettrip_fe/screens/care/care_find_page.dart';
+import 'package:pettrip_fe/screens/chat/chat_home_page.dart';
 
 class CareServicePage extends StatefulWidget {
   @override

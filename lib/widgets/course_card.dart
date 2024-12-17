@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/models/comment_model.dart';
 import 'package:pettrip_fe/models/course_model.dart';
-import 'package:pettrip_fe/screens/course_detail_page.dart';
+import 'package:pettrip_fe/screens/course/course_detail_page.dart';
 import 'package:pettrip_fe/widgets/like_button.dart';
 import 'package:pettrip_fe/widgets/tag_scroll_view.dart';
 

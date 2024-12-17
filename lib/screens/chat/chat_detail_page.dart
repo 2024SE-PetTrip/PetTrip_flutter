@@ -6,10 +6,10 @@ import 'dart:convert';
 import 'package:pettrip_fe/services/chat_message_service.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-import '../const/colors.dart';
-import '../const/secret_key.dart';
-import '../models/user_model.dart';
-import '../services/token_storage.dart';
+import '../../const/colors.dart';
+import '../../const/secret_key.dart';
+import '../../models/user_model.dart';
+import '../../services/token_storage.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final ChatRoomModel room;

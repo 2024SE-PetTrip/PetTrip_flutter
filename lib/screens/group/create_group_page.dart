@@ -7,10 +7,10 @@ import 'package:pettrip_fe/services/token_storage.dart';
 import 'package:pettrip_fe/services/walk_group_service.dart';
 import 'package:pettrip_fe/widgets/province_city_selector.dart';
 
-import '../const/colors.dart';
-import '../const/style.dart';
-import '../services/token_parser.dart';
-import '../widgets/tag_selector.dart';
+import '../../const/colors.dart';
+import '../../const/style.dart';
+import '../../services/token_parser.dart';
+import '../../widgets/tag_selector.dart';
 
 class CreateGroupPage extends StatefulWidget {
   const CreateGroupPage({super.key});

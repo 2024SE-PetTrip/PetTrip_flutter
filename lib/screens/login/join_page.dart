@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/services/login_service.dart';
 
-import '../const/style.dart';
-import '../widgets/province_city_selector.dart';
+import '../../const/style.dart';
+import '../../widgets/province_city_selector.dart';
 
 class JoinPage extends StatefulWidget {
   const JoinPage({super.key});

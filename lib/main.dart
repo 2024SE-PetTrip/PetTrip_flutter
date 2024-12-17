@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pettrip_fe/const/secret_key.dart';
-import 'package:pettrip_fe/screens/login_page.dart';
+import 'package:pettrip_fe/screens/login/login_page.dart';
 import 'package:pettrip_fe/screens/main_page.dart';
 
 void main() async {

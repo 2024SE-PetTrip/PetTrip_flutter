@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/style.dart';
 import 'package:pettrip_fe/models/user_model.dart';
-import 'package:pettrip_fe/screens/add_pet_page.dart';
+import 'package:pettrip_fe/screens/user/add_pet_page.dart';
 import 'package:pettrip_fe/services/token_storage.dart';
 import 'package:pettrip_fe/services/user_service.dart';
 

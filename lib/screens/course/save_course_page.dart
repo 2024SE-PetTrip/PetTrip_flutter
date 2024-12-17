@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:pettrip_fe/widgets/save_course_form.dart';
 
-import '../services/location_service.dart';
+import '../../services/location_service.dart';
 
 class SaveCoursePage extends StatelessWidget {
   final String trackedTime;

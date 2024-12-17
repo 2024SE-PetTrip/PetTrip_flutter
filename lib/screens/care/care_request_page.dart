@@ -6,8 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pettrip_fe/widgets/province_city_selector.dart';
 
-import '../const/colors.dart';
-import '../const/style.dart';
+import '../../const/colors.dart';
+import '../../const/style.dart';
 
 class CareRequestPage extends StatefulWidget {
   const CareRequestPage({super.key});

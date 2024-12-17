@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pettrip_fe/const/colors.dart';
 
-import '../const/style.dart';
-import '../models/course_model.dart';
-import '../services/course_service.dart';
-import '../services/token_parser.dart';
-import '../services/token_storage.dart';
-import '../widgets/save_course_form.dart';
+import '../../const/style.dart';
+import '../../models/course_model.dart';
+import '../../services/course_service.dart';
+import '../../services/token_parser.dart';
+import '../../services/token_storage.dart';
+import '../../widgets/save_course_form.dart';
 
 class UploadCoursePage extends StatefulWidget {
   const UploadCoursePage({super.key});
